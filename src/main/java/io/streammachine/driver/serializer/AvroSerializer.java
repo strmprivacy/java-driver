@@ -33,7 +33,7 @@ public class AvroSerializer implements EventSerializer {
      * serialize a GenericRecord or something compatible (like DemoUserV1 in the tests)
      *
      * @param event             the avro record
-     * @param serializationType
+     * @param serializationType the kind of serialization to use for the event
      * @return a bytes representation of the record contents.
      * @throws IllegalStateException problem with the Avro serialization.
      */

@@ -25,11 +25,15 @@ public class StreamMachineEventDTO {
     }
 
     public String getSerializationTypeHeader() {
-        return switch (this.serializationType) {
-            case JSON, AVRO_JSON -> "application/json";
-            case AVRO_BINARY -> "application/x-avro-binary";
-            default -> throw new UnsupportedSerializationTypeException("Unsupported Serialization Type '" + this.serializationType + "'.");
-        };
+        switch (this.serializationType) {
+            case JSON:
+            case AVRO_JSON:
+                return "application/json";
+            case AVRO_BINARY:
+                return "application/x-avro-binary";
+            default:
+                throw new UnsupportedSerializationTypeException("Unsupported Serialization Type '" + this.serializationType + "'.");
+        }
     }
 
     public byte[] serialize() {

@@ -10,22 +10,26 @@ import lombok.Data;
 @AllArgsConstructor
 public class Config {
     @Builder.Default
-    private final String gatewayProtocol = "https";
+    private final String gatewayScheme = "https";
     @Builder.Default
     private final String gatewayHost = "in.strm.services";
     @Builder.Default
     private final String gatewayEndpoint = "/event";
 
     @Builder.Default
-    private final String egressProtocol = "https";
+    private final String egressScheme = "https";
+    @Builder.Default
+    private final String egressWsScheme = "wss";
     @Builder.Default
     private final String egressHost = "out.strm.services";
     @Builder.Default
-    private final String egressEndpoint = "/sse";
+    private final String egressSseEndpoint = "/sse";
+    @Builder.Default
+    private final String egressWsEndpoint = "/ws";
     private final String egressHealthEndpoint = "/is-alive";
 
     @Builder.Default
-    private final String stsProtocol = "https";
+    private final String stsScheme = "https";
     @Builder.Default
     private final String stsHost = "auth.strm.services";
     @Builder.Default

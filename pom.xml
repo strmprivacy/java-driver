@@ -5,7 +5,7 @@
 
     <groupId>io.streammachine</groupId>
     <artifactId>java-driver</artifactId>
-    <version>0.0.1</version>
+    <version>0.1.0</version>
 
     <name>io.streammachine:java-driver</name>
     <description>Java driver for interacting with Stream Machine.</description>
@@ -33,19 +33,12 @@
         </developer>
     </developers>
 
-    <scm>
-        <connection>scm:git:git@gitlab.com:stream-machine/client-drivers/java/java-driver.git</connection>
-        <developerConnection>scm:git:ssh://gitlab.com:stream-machine/client-drivers/java/java-driver.git
-        </developerConnection>
-        <url>https://gitlab.com/stream-machine/client-drivers/java/java-driver</url>
-    </scm>
-
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 
         <avro.version>1.10.0</avro.version>
-        <java.version>14</java.version>
+        <java.version>1.8</java.version>
         <lombok.version>1.18.12</lombok.version>
 
         <maven-assembly-plugin.version>3.1.1</maven-assembly-plugin.version>
@@ -64,6 +57,7 @@
         <junit-jupiter.version>5.6.2</junit-jupiter.version>
         <slf4j-log4j12.version>1.7.30</slf4j-log4j12.version>
         <wiremock.version>2.26.1</wiremock.version>
+        <async-http-client.version>2.12.1</async-http-client.version>
     </properties>
 
     <dependencies>
@@ -113,6 +107,11 @@
             <groupId>org.glassfish.jersey.inject</groupId>
             <artifactId>jersey-hk2</artifactId>
             <version>${jersey.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.asynchttpclient</groupId>
+            <artifactId>async-http-client</artifactId>
+            <version>${async-http-client.version}</version>
         </dependency>
 
         <dependency>
