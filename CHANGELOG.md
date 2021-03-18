@@ -1,5 +1,13 @@
 # Changelog
 
+### 0.2.0 (2021-03-18)
+### Features
+* Replaced `asynchttpclient` with Jetty client
+* Support for HTTP/2
+
+### Deprecation
+* Removed Server Sent Events support
+
 ### 0.1.0 (2020-11-16)
 ### Features
 * Adds websocket support

@@ -15,6 +15,8 @@ public class Config {
     private final String gatewayHost = "in.strm.services";
     @Builder.Default
     private final String gatewayEndpoint = "/event";
+    @Builder.Default
+    private final int gatewayPort = 443;
 
     @Builder.Default
     private final String egressScheme = "https";
@@ -22,8 +24,6 @@ public class Config {
     private final String egressWsScheme = "wss";
     @Builder.Default
     private final String egressHost = "out.strm.services";
-    @Builder.Default
-    private final String egressSseEndpoint = "/sse";
     @Builder.Default
     private final String egressWsEndpoint = "/ws";
     private final String egressHealthEndpoint = "/is-alive";

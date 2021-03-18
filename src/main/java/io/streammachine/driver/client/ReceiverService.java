@@ -1,32 +1,28 @@
 package io.streammachine.driver.client;
 
+import io.streammachine.driver.common.CompletableFutureResponseListener;
+import io.streammachine.driver.common.WebSocketConsumer;
 import io.streammachine.driver.domain.Config;
-import org.asynchttpclient.AsyncHttpClient;
-import org.asynchttpclient.Response;
-import org.asynchttpclient.ws.WebSocketListener;
-import org.asynchttpclient.ws.WebSocketUpgradeHandler;
+import org.eclipse.jetty.client.HttpClient;
+import org.eclipse.jetty.client.api.ContentResponse;
+import org.eclipse.jetty.http.HttpHeader;
+import org.eclipse.jetty.util.ssl.SslContextFactory;
+import org.eclipse.jetty.websocket.api.Session;
+import org.eclipse.jetty.websocket.client.ClientUpgradeRequest;
+import org.eclipse.jetty.websocket.client.WebSocketClient;
 
-import javax.ws.rs.client.Client;
-import javax.ws.rs.client.ClientBuilder;
-import javax.ws.rs.client.ClientRequestContext;
-import javax.ws.rs.client.ClientRequestFilter;
+import javax.ws.rs.HttpMethod;
 import javax.ws.rs.core.UriBuilder;
-import javax.ws.rs.sse.InboundSseEvent;
-import javax.ws.rs.sse.SseEventSource;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.util.concurrent.TimeUnit;
-import java.util.function.Consumer;
-
-import static javax.ws.rs.core.HttpHeaders.AUTHORIZATION;
-import static org.asynchttpclient.Dsl.asyncHttpClient;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.Future;
 
 class ReceiverService {
-    private String isAliveUri;
-    private URI defaultSseEndpointUri;
-    private URI defaultWsEndpointUri;
-    private final Client sseClient;
-    private final AsyncHttpClient client;
+    private final String isAliveUri;
+    private final URI defaultWsEndpointUri;
+    private final HttpClient httpClient;
+    private final WebSocketClient wsClient;
     private final AuthService authService;
 
     public ReceiverService(String billingId, String clientId, String clientSecret, Config config) {
@@ -35,14 +31,6 @@ class ReceiverService {
                     config.getEgressScheme(),
                     config.getEgressHost(),
                     config.getEgressHealthEndpoint()
-            );
-
-            this.defaultSseEndpointUri = new URI(
-                    String.format("%s://%s%s",
-                            config.getEgressScheme(),
-                            config.getEgressHost(),
-                            config.getEgressSseEndpoint()
-                    )
             );
 
             this.defaultWsEndpointUri = new URI(
@@ -56,8 +44,11 @@ class ReceiverService {
             throw new IllegalStateException("Malformed URI(s) for " + this.getClass().getCanonicalName(), e);
         }
 
-        this.sseClient = ClientBuilder.newBuilder().register(new AddAuthHeader()).build();
-        this.client = asyncHttpClient();
+
+        SslContextFactory sslContextFactory = new SslContextFactory.Client();
+        this.httpClient = new HttpClient(sslContextFactory);
+        this.wsClient = new WebSocketClient(httpClient);
+
         this.authService = AuthService.builder()
                 .purpose(this.getClass().getSimpleName())
                 .billingId(billingId)
@@ -65,47 +56,51 @@ class ReceiverService {
                 .clientSecret(clientSecret)
                 .config(config)
                 .build();
+
+        try {
+            httpClient.start();
+        } catch (Exception e) {
+            throw new IllegalStateException("An unexpected error occurred while starting a new Receiver for Stream Machine.", e);
+        }
     }
 
-    public void receiveWs(boolean asJson, WebSocketListener consumer) {
+    public void receiveWs(boolean asJson, WebSocketConsumer consumer) {
         URI uri = asJson ? UriBuilder.fromUri(this.defaultWsEndpointUri).queryParam("asJson", true).build() : this.defaultWsEndpointUri;
 
-        client.prepareGet(uri.toString())
-                .addHeader(AUTHORIZATION, getBearerHeaderValue())
-                .execute(new WebSocketUpgradeHandler.Builder()
-                        .addWebSocketListener(consumer)
-                        .build()
-                );
+        try {
+            try {
+                wsClient.start();
+
+                ClientUpgradeRequest request = new ClientUpgradeRequest();
+                request.setHeader(HttpHeader.AUTHORIZATION.asString(), getBearerHeaderValue());
+
+                Future<Session> future = wsClient.connect(consumer, uri, request);
+
+                Session session = future.get();
+
+                consumer.awaitClosure();
+
+                session.close();
+            } finally {
+                wsClient.stop();
+            }
+        } catch (Exception e) {
+            throw new IllegalStateException("An unexpected error occurred while trying to (dis)connect via WebSocket.", e);
+        }
     }
 
-    public void receiveSse(boolean asJson, Consumer<InboundSseEvent> consumer) {
-        URI uri = asJson ? UriBuilder.fromUri(this.defaultSseEndpointUri).queryParam("asJson", true).build() : this.defaultSseEndpointUri;
+    public ContentResponse isAlive() {
+        CompletableFuture<ContentResponse> completableFuture = new CompletableFuture<>();
 
-        SseEventSource eventSource = SseEventSource.target(sseClient.target(uri))
-                .reconnectingEvery(60, TimeUnit.SECONDS)
-                .build();
+        httpClient.newRequest(isAliveUri)
+                .method(HttpMethod.GET)
+                .header(HttpHeader.AUTHORIZATION, getBearerHeaderValue())
+                .send(new CompletableFutureResponseListener(completableFuture));
 
-        eventSource.register(consumer);
-        eventSource.open();
-    }
-
-    public Response isAlive() {
-        return client.prepareGet(isAliveUri)
-                .addHeader(AUTHORIZATION, getBearerHeaderValue())
-                .execute()
-                .toCompletableFuture()
-                .join();
+        return completableFuture.join();
     }
 
     private String getBearerHeaderValue() {
         return String.format("Bearer %s", authService.getAccessToken());
-    }
-
-    private class AddAuthHeader implements ClientRequestFilter {
-        @Override
-        public void filter(ClientRequestContext requestContext) {
-            String bearerToken = String.format("Bearer %s", authService.getAccessToken());
-            requestContext.getHeaders().add(AUTHORIZATION, bearerToken);
-        }
     }
 }

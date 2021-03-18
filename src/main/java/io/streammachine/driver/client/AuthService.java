@@ -6,8 +6,11 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 import io.streammachine.driver.domain.Config;
 import lombok.Builder;
 import lombok.extern.slf4j.Slf4j;
-import org.asynchttpclient.AsyncHttpClient;
-import org.asynchttpclient.Response;
+import org.eclipse.jetty.client.HttpClient;
+import org.eclipse.jetty.client.api.ContentResponse;
+import org.eclipse.jetty.client.util.StringContentProvider;
+import org.eclipse.jetty.http.HttpHeader;
+import org.eclipse.jetty.util.ssl.SslContextFactory;
 
 import java.io.IOException;
 import java.net.URI;
@@ -17,12 +20,13 @@ import java.time.Instant;
 import java.util.Timer;
 import java.util.TimerTask;
 import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.TimeoutException;
 
-import static org.asynchttpclient.Dsl.asyncHttpClient;
 
 @Slf4j
 class AuthService {
-    private static final AsyncHttpClient HTTP_CLIENT = asyncHttpClient();
+    private static final HttpClient HTTP_CLIENT;
     private static final ObjectMapper MAPPER = new ObjectMapper()
             .configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
 
@@ -30,14 +34,21 @@ class AuthService {
     private final String billingId;
     private final String clientId;
     private final String clientSecret;
-    private final Config config;
 
-    private final Timer timer;
     private final CountDownLatch latch;
     private AuthProvider authProvider;
 
     private final String authUri;
     private final String refreshUri;
+
+    static {
+        HTTP_CLIENT = new HttpClient(new SslContextFactory.Client());
+        try {
+            HTTP_CLIENT.start();
+        } catch (Exception e) {
+            throw new IllegalStateException("An unexpected error occurred while starting a new AuthService for Stream Machine.", e);
+        }
+    }
 
     @Builder
     public AuthService(String purpose, String billingId, String clientId, String clientSecret, Config config) {
@@ -45,7 +56,6 @@ class AuthService {
         this.billingId = billingId;
         this.clientId = clientId;
         this.clientSecret = clientSecret;
-        this.config = config;
 
         try {
             this.authUri = new URI(String.format("%s://%s%s", config.getStsScheme(), config.getStsHost(), config.getStsAuthEndpoint())).toString();
@@ -54,7 +64,7 @@ class AuthService {
             throw new IllegalStateException("Malformed URI(s) for " + this.getClass().getCanonicalName(), e);
         }
 
-        this.timer = new Timer();
+        Timer timer = new Timer();
         this.latch = new CountDownLatch(1);
         timer.schedule(new AuthProviderInitializerTask(), 0, Duration.ofMinutes(5).toMillis());
 
@@ -77,7 +87,7 @@ class AuthService {
                     .put("clientSecret", clientSecret);
 
             doPost(authUri, payload);
-        } catch (IOException | InterruptedException e) {
+        } catch (IOException | InterruptedException | TimeoutException | ExecutionException e) {
             log.error("An error occurred while requesting an access token with clientId '{}' and billingId '{}'", clientId, billingId, e);
         }
     }
@@ -88,7 +98,7 @@ class AuthService {
             payload.put("refreshToken", refreshToken);
 
             doPost(refreshUri, payload);
-        } catch (IOException | InterruptedException e) {
+        } catch (IOException | InterruptedException | TimeoutException | ExecutionException e) {
             log.debug("Failed to refresh token with clientId '{}' and billingId '{}'", clientId, billingId);
             log.debug("Trying to request a new token with clientId '{}' and billingId '{}'", clientId, billingId);
 
@@ -96,15 +106,13 @@ class AuthService {
         }
     }
 
-    private void doPost(String uri, ObjectNode payload) throws IOException, InterruptedException {
-        Response response = HTTP_CLIENT.preparePost(uri)
-                .setBody(MAPPER.writeValueAsString(payload))
-                .addHeader("Content-Type", "application/json; charset=UTF-8")
-                .execute()
-                .toCompletableFuture()
-                .join();
+    private void doPost(String uri, ObjectNode payload) throws IOException, InterruptedException, TimeoutException, ExecutionException {
+        ContentResponse response = HTTP_CLIENT.POST(uri)
+                .content(new StringContentProvider(MAPPER.writeValueAsString(payload)))
+                .header(HttpHeader.CONTENT_TYPE, "application/json; charset=UTF-8")
+                .send();
 
-        this.authProvider = MAPPER.readValue(response.getResponseBody(), AuthProvider.class);
+        this.authProvider = MAPPER.readValue(response.getContentAsString(), AuthProvider.class);
     }
 
     private class AuthProviderInitializerTask extends TimerTask {
