@@ -2,9 +2,9 @@ package io.streammachine.driver.client;
 
 import io.streammachine.driver.common.CompletableFutureResponseListener;
 import io.streammachine.driver.domain.Config;
-import io.streammachine.driver.domain.StreamMachineEvent;
 import io.streammachine.driver.domain.StreamMachineEventDTO;
 import io.streammachine.driver.serializer.SerializationType;
+import io.streammachine.schemas.StreamMachineEvent;
 import org.eclipse.jetty.client.HttpClient;
 import org.eclipse.jetty.client.api.ContentResponse;
 import org.eclipse.jetty.client.util.BytesContentProvider;
@@ -36,6 +36,7 @@ class SenderService {
         SslContextFactory sslContextFactory = new SslContextFactory.Client();
         http2Client.addBean(sslContextFactory);
         httpClient = new HttpClient(new HttpClientTransportOverHTTP2(http2Client), sslContextFactory);
+        httpClient.setMaxRequestsQueuedPerDestination(65536);
 
         try {
             http2Client.start();
@@ -53,7 +54,6 @@ class SenderService {
                 .header(HttpHeader.AUTHORIZATION, getBearerHeaderValue())
                 .header(HttpHeader.CONTENT_TYPE, "application/octet-stream")
                 .header("Strm-Driver-Version", config.getImplementationVersion())
-                .header("Strm-Driver-Build", "GET FROM VERSION FILE-Add with Maven")
                 .header("Strm-Serialization-Type", dto.getSerializationTypeHeader())
                 .header("Strm-Schema-Id", dto.getSchemaId())
                 .content(new BytesContentProvider(dto.serialize()))

@@ -37,6 +37,9 @@ public class Config {
     @Builder.Default
     private final String stsRefreshEndpoint = "/refresh";
 
-    @Builder.Default
-    private final String implementationVersion = "development";
+    public String getImplementationVersion() {
+        String version = this.getClass().getPackage().getImplementationVersion();
+
+        return version != null ? version : "development";
+    }
 }

@@ -4,6 +4,7 @@ import io.streammachine.driver.serializer.EventSerializer;
 import io.streammachine.driver.serializer.SerializationType;
 import io.streammachine.driver.serializer.SerializerProvider;
 import io.streammachine.driver.serializer.UnsupportedSerializationTypeException;
+import io.streammachine.schemas.StreamMachineEvent;
 import lombok.Builder;
 import lombok.Getter;
 
