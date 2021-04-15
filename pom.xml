@@ -4,7 +4,7 @@
 
     <groupId>io.streammachine</groupId>
     <artifactId>java-driver</artifactId>
-    <version>0.3.0-SNAPSHOT</version>
+    <version>0.2.1-SNAPSHOT</version>
 
     <name>io.streammachine:java-driver</name>
     <description>Java driver for interacting with Stream Machine.</description>
@@ -19,13 +19,7 @@
 
     <developers>
         <developer>
-            <name>Bart van Deenen</name>
-            <email>developer-support@streammachine.io</email>
-            <organization>Stream Machine B.V.</organization>
-            <organizationUrl>https://streammachine.io</organizationUrl>
-        </developer>
-        <developer>
-            <name>Robin Trietsch</name>
+            <name>Stream Machine B.V></name>
             <email>developer-support@streammachine.io</email>
             <organization>Stream Machine B.V.</organization>
             <organizationUrl>https://streammachine.io</organizationUrl>
@@ -46,6 +40,7 @@
         <avro.version>1.10.0</avro.version>
         <java.version>1.8</java.version>
         <lombok.version>1.18.12</lombok.version>
+        <schema-common.version>0.1.0</schema-common.version>
 
         <maven-assembly-plugin.version>3.1.1</maven-assembly-plugin.version>
         <maven-compiler-plugin.version>3.8.0</maven-compiler-plugin.version>
@@ -70,6 +65,11 @@
     </properties>
 
     <dependencies>
+        <dependency>
+            <groupId>io.streammachine.schemas</groupId>
+            <artifactId>schema-common</artifactId>
+            <version>${schema-common.version}</version>
+        </dependency>
         <dependency>
             <groupId>com.github.fge</groupId>
             <artifactId>json-schema-validator</artifactId>
@@ -186,23 +186,15 @@
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-assembly-plugin</artifactId>
-                <version>${maven-assembly-plugin.version}</version>
-
-                <executions>
-                    <execution>
-                        <id>make-assembly</id>
-                        <phase>package</phase>
-                        <goals>
-                            <goal>single</goal>
-                        </goals>
-                    </execution>
-                </executions>
-
+                <artifactId>maven-jar-plugin</artifactId>
+                <version>3.2.0</version>
                 <configuration>
-                    <descriptorRefs>
-                        <descriptorRef>jar-with-dependencies</descriptorRef>
-                    </descriptorRefs>
+                    <archive>
+                        <manifest>
+                            <addDefaultImplementationEntries>true</addDefaultImplementationEntries>
+                            <addDefaultSpecificationEntries>true</addDefaultSpecificationEntries>
+                        </manifest>
+                    </archive>
                 </configuration>
             </plugin>
             <plugin>

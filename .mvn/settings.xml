@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="US-ASCII"?>
+<settings xmlns="http://maven.apache.org/SETTINGS/1.0.0"
+          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xsi:schemaLocation="http://maven.apache.org/SETTINGS/1.0.0 http://maven.apache.org/xsd/settings-1.0.0.xsd">
+
+    <servers>
+        <server>
+            <id>central</id>
+            <username>${env.MAVEN_OSSRH_USER}</username>
+            <password>${env.MAVEN_OSSRH_PASSWORD}</password>
+        </server>
+    </servers>
+
+    <profiles>
+        <profile>
+            <id>central</id>
+            <repositories>
+                <repository>
+                    <id>central-snapshot</id>
+                    <url>https://oss.sonatype.org/content/repositories/snapshots</url>
+                </repository>
+                <repository>
+                    <id>central-release</id>
+                    <url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
+                </repository>
+            </repositories>
+            <properties>
+                <gpg.keyname>${env.GPG_KEYNAME}</gpg.keyname>
+                <gpg.passphrase>${env.GPG_PASSPHRASE}</gpg.passphrase>
+                <altSnapshotDeploymentRepository>central::default::https://oss.sonatype.org/content/repositories/snapshots</altSnapshotDeploymentRepository>
+                <altReleaseDeploymentRepository>central::default::https://oss.sonatype.org/service/local/staging/deploy/maven2/</altReleaseDeploymentRepository>
+            </properties>
+        </profile>
+    </profiles>
+
+    <activeProfiles>
+        <activeProfile>central</activeProfile>
+    </activeProfiles>
+</settings>

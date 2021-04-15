@@ -2,7 +2,7 @@ package io.streammachine.driver.client;
 
 import io.streammachine.driver.common.WebSocketConsumer;
 import io.streammachine.driver.domain.Config;
-import io.streammachine.driver.domain.StreamMachineEvent;
+import io.streammachine.schemas.StreamMachineEvent;
 import io.streammachine.driver.serializer.SerializationType;
 import lombok.Builder;
 import lombok.extern.slf4j.Slf4j;
