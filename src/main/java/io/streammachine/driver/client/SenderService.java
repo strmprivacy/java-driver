@@ -36,7 +36,6 @@ class SenderService {
         SslContextFactory sslContextFactory = new SslContextFactory.Client();
         http2Client.addBean(sslContextFactory);
         httpClient = new HttpClient(new HttpClientTransportOverHTTP2(http2Client), sslContextFactory);
-        httpClient.setMaxRequestsQueuedPerDestination(65536);
 
         try {
             http2Client.start();
