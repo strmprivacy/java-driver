@@ -54,7 +54,7 @@ class SenderService {
                 .header(HttpHeader.CONTENT_TYPE, "application/octet-stream")
                 .header("Strm-Driver-Version", config.getImplementationVersion())
                 .header("Strm-Serialization-Type", dto.getSerializationTypeHeader())
-                .header("Strm-Schema-Id", dto.getSchemaId())
+                .header("Strm-Schema-Ref", dto.getSchemaRef())
                 .content(new BytesContentProvider(dto.serialize()))
                 .send(new CompletableFutureResponseListener(completableFuture));
 

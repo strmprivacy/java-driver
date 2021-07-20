@@ -21,8 +21,8 @@ public class StreamMachineEventDTO {
         this.serializationType = serializationType;
     }
 
-    public String getSchemaId() {
-        return this.event.getStrmSchemaId();
+    public String getSchemaRef() {
+        return this.event.getSchemaRef();
     }
 
     public String getSerializationTypeHeader() {
@@ -39,8 +39,8 @@ public class StreamMachineEventDTO {
 
     public byte[] serialize() {
         try {
-            final Object streamMachineSchema = event.getStrmSchema();
-            final EventSerializer serializer = SerializerProvider.getSerializer(getSchemaId(), streamMachineSchema);
+            final Object streamMachineSchema = event.getSchema();
+            final EventSerializer serializer = SerializerProvider.getSerializer(getSchemaRef(), streamMachineSchema);
             return serializer.serialize(event, serializationType);
         } catch (IOException e) {
             e.printStackTrace();
