@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import io.streammachine.driver.domain.Config;
+import io.streammachine.driver.domain.StreamMachineException;
 import lombok.Builder;
 import lombok.extern.slf4j.Slf4j;
 import org.eclipse.jetty.client.HttpClient;
@@ -26,36 +27,34 @@ import java.util.concurrent.TimeoutException;
 
 @Slf4j
 class AuthService {
-    private static final HttpClient HTTP_CLIENT;
     private static final ObjectMapper MAPPER = new ObjectMapper()
             .configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
 
-    private final String purpose;
     private final String billingId;
     private final String clientId;
     private final String clientSecret;
 
+    private final HttpClient httpClient;
+
     private final CountDownLatch latch;
+    private final Timer timer;
     private AuthProvider authProvider;
 
     private final String authUri;
     private final String refreshUri;
 
-    static {
-        HTTP_CLIENT = new HttpClient(new SslContextFactory.Client());
-        try {
-            HTTP_CLIENT.start();
-        } catch (Exception e) {
-            throw new IllegalStateException("An unexpected error occurred while starting a new AuthService for Stream Machine.", e);
-        }
-    }
-
     @Builder
-    public AuthService(String purpose, String billingId, String clientId, String clientSecret, Config config) {
-        this.purpose = purpose;
+    public AuthService(String billingId, String clientId, String clientSecret, Config config) {
         this.billingId = billingId;
         this.clientId = clientId;
         this.clientSecret = clientSecret;
+
+        this.httpClient = new HttpClient(new SslContextFactory.Client());
+        try {
+            this.httpClient.start();
+        } catch (Exception e) {
+            throw new IllegalStateException("An unexpected error occurred while starting a new AuthService for Stream Machine.", e);
+        }
 
         try {
             this.authUri = new URI(String.format("%s://%s%s", config.getStsScheme(), config.getStsHost(), config.getStsAuthEndpoint())).toString();
@@ -64,9 +63,9 @@ class AuthService {
             throw new IllegalStateException("Malformed URI(s) for " + this.getClass().getCanonicalName(), e);
         }
 
-        Timer timer = new Timer();
+        this.timer = new Timer();
         this.latch = new CountDownLatch(1);
-        timer.schedule(new AuthProviderInitializerTask(), 0, Duration.ofMinutes(5).toMillis());
+        this.timer.schedule(new AuthProviderInitializerTask(), 0, Duration.ofMinutes(5).toMillis());
 
         try {
             latch.await();
@@ -77,6 +76,15 @@ class AuthService {
 
     public String getAccessToken() {
         return authProvider.getIdToken();
+    }
+
+    public void stop() {
+        try {
+            this.timer.cancel();
+            this.httpClient.stop();
+        } catch (Exception e) {
+            throw new StreamMachineException("Error stopping AuthService HttpClient", e);
+        }
     }
 
     private void authenticate(String billingId, String clientId, String clientSecret) {
@@ -107,10 +115,10 @@ class AuthService {
     }
 
     private void doPost(String uri, ObjectNode payload) throws IOException, InterruptedException, TimeoutException, ExecutionException {
-        ContentResponse response = HTTP_CLIENT.POST(uri)
-                .content(new StringContentProvider(MAPPER.writeValueAsString(payload)))
-                .header(HttpHeader.CONTENT_TYPE, "application/json; charset=UTF-8")
-                .send();
+        ContentResponse response = httpClient.POST(uri)
+                                             .content(new StringContentProvider(MAPPER.writeValueAsString(payload)))
+                                             .header(HttpHeader.CONTENT_TYPE, "application/json; charset=UTF-8")
+                                             .send();
 
         this.authProvider = MAPPER.readValue(response.getContentAsString(), AuthProvider.class);
     }
@@ -120,11 +128,11 @@ class AuthService {
 
         public void run() {
             if (authProvider == null) {
-                log.debug("Initializing a new Auth Provider for {}", purpose);
+                log.debug("Initializing a new Auth Provider");
                 authenticate(billingId, clientId, clientSecret);
                 latch.countDown();
             } else if (isAlmostExpired(authProvider.getExpiresAt())) {
-                log.debug("Refreshing an existing Auth Provider {}", purpose);
+                log.debug("Refreshing an existing Auth Provider");
                 refresh(authProvider.getRefreshToken(), billingId, clientId, clientSecret);
             }
         }

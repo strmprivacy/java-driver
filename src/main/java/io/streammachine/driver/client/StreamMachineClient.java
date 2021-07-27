@@ -16,13 +16,15 @@ import java.util.concurrent.CompletableFuture;
  */
 @Slf4j
 public class StreamMachineClient {
+    private final AuthService authService;
     private final SenderService senderService;
     private final ReceiverService receiverService;
 
     @Builder
     public StreamMachineClient(String billingId, String clientId, String clientSecret, Config config) {
-        this.senderService = new SenderService(billingId, clientId, clientSecret, config);
-        this.receiverService = new ReceiverService(billingId, clientId, clientSecret, config);
+        this.authService = new AuthService(billingId, clientId, clientSecret, config);
+        this.senderService = new SenderService(authService, config);
+        this.receiverService = new ReceiverService(authService, config);
     }
 
     /**
@@ -56,5 +58,14 @@ public class StreamMachineClient {
      */
     public ContentResponse egressIsAlive() {
         return receiverService.isAlive();
+    }
+
+    /**
+     * Disconnects the client and frees up any resources
+     */
+    public void stop() {
+        senderService.stop();
+        receiverService.stop();
+        authService.stop();
     }
 }
