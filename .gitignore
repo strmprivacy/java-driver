@@ -1,3 +1,7 @@
-/.idea/
-/target/
-.envrc
+.idea
+
+node_modules/
+build/
+out/
+.gradle/
+.secrets
