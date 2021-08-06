@@ -1,3 +1,10 @@
+## [1.0.1](https://github.com/streammachineio/java-driver/compare/v1.0.0...v1.0.1) (2021-08-06)
+
+
+### Bug Fixes
+
+* set compile scope for specific transitive dependencies to fix examples ([92ae940](https://github.com/streammachineio/java-driver/commit/92ae9402237bca87d994ba3f3226a34d333b342c))
+
 # [1.0.0](https://github.com/streammachineio/java-driver/compare/v0.1.0...v1.0.0) (2021-08-06)
 
 
