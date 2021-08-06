@@ -28,10 +28,11 @@ dependencies {
     annotationProcessor("org.projectlombok:lombok:$lombokVersion")
     implementation("org.slf4j:slf4j-log4j12:$slf4jVersion")
     implementation("org.slf4j:slf4j-api:$slf4jVersion")
+
     implementation("com.fasterxml.jackson.core:jackson-databind:2.8.8")
-    implementation("org.glassfish.jersey.core:jersey-client:$jerseyVersion")
-    implementation("org.glassfish.jersey.media:jersey-media-sse:$jerseyVersion")
-    implementation("org.glassfish.jersey.inject:jersey-hk2:$jerseyVersion")
+    api("org.glassfish.jersey.core:jersey-client:$jerseyVersion")
+    api("org.glassfish.jersey.media:jersey-media-sse:$jerseyVersion")
+    api("org.glassfish.jersey.inject:jersey-hk2:$jerseyVersion")
 
     api("org.eclipse.jetty:jetty-client:$jettyVersion")
     api("org.eclipse.jetty.http2:http2-client:$jettyVersion")
