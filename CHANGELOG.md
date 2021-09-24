@@ -1,3 +1,10 @@
+## [1.0.2](https://github.com/streammachineio/java-driver/compare/v1.0.1...v1.0.2) (2021-09-24)
+
+
+### Bug Fixes
+
+* fail CompletableFuture on http errors ([#7](https://github.com/streammachineio/java-driver/issues/7)) ([30e734c](https://github.com/streammachineio/java-driver/commit/30e734c15b9c5cb6f43d214080a78fc32bfd6168))
+
 ## [1.0.1](https://github.com/streammachineio/java-driver/compare/v1.0.0...v1.0.1) (2021-08-06)
 
 
