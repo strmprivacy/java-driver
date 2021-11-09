@@ -1,9 +1,9 @@
-package io.streammachine.driver.client;
+package io.strmprivacy.driver.client;
 
-import io.streammachine.driver.common.CompletableFutureResponseListener;
-import io.streammachine.driver.common.WebSocketConsumer;
-import io.streammachine.driver.domain.Config;
-import io.streammachine.driver.domain.StreamMachineException;
+import io.strmprivacy.driver.common.CompletableFutureResponseListener;
+import io.strmprivacy.driver.common.WebSocketConsumer;
+import io.strmprivacy.driver.domain.Config;
+import io.strmprivacy.driver.domain.StrmPrivacyException;
 import lombok.extern.slf4j.Slf4j;
 import org.eclipse.jetty.client.HttpClient;
 import org.eclipse.jetty.client.api.ContentResponse;
@@ -56,7 +56,7 @@ class ReceiverService {
         try {
             httpClient.start();
         } catch (Exception e) {
-            throw new IllegalStateException("An unexpected error occurred while starting a new Receiver for Stream Machine.", e);
+            throw new IllegalStateException("An unexpected error occurred while starting a new Receiver for Strm Privacy.", e);
         }
     }
 
@@ -77,12 +77,12 @@ class ReceiverService {
 
             session.close();
         } catch (Exception e) {
-            throw new StreamMachineException("An error occurred while (dis)connecting WebSocket.", e);
+            throw new StrmPrivacyException("An error occurred while (dis)connecting WebSocket.", e);
         } finally {
             try {
                 wsClient.stop();
             } catch (Exception e) {
-                throw new StreamMachineException("An error occurred while disconnecting WebSocket ", e);
+                throw new StrmPrivacyException("An error occurred while disconnecting WebSocket ", e);
             }
         }
     }
@@ -103,11 +103,11 @@ class ReceiverService {
     }
 
     public void stop() {
-        StreamMachineException exception = null;
+        StrmPrivacyException exception = null;
         try {
             this.httpClient.stop();
         } catch (Exception e) {
-            exception = new StreamMachineException("Error stopping ReceiverService HttpClient", e);
+            exception = new StrmPrivacyException("Error stopping ReceiverService HttpClient", e);
         }
         try {
             this.wsClient.stop();
@@ -115,7 +115,7 @@ class ReceiverService {
             if (exception != null) {
                 exception.addSuppressed(e);
             } else {
-                exception = new StreamMachineException("Error stopping ReceiverService WsClient", e);
+                exception = new StrmPrivacyException("Error stopping ReceiverService WsClient", e);
             }
         }
 

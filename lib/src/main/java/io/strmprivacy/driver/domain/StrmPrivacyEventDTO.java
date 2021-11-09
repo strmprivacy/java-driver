@@ -1,22 +1,22 @@
-package io.streammachine.driver.domain;
+package io.strmprivacy.driver.domain;
 
-import io.streammachine.driver.serializer.EventSerializer;
-import io.streammachine.driver.serializer.SerializationType;
-import io.streammachine.driver.serializer.SerializerProvider;
-import io.streammachine.driver.serializer.UnsupportedSerializationTypeException;
-import io.streammachine.schemas.StreamMachineEvent;
+import io.strmprivacy.driver.serializer.EventSerializer;
+import io.strmprivacy.driver.serializer.SerializationType;
+import io.strmprivacy.driver.serializer.SerializerProvider;
+import io.strmprivacy.driver.serializer.UnsupportedSerializationTypeException;
+import io.strmprivacy.schemas.StrmEvent;
 import lombok.Builder;
 import lombok.Getter;
 
 import java.io.IOException;
 
 @Getter
-public class StreamMachineEventDTO {
-    private final StreamMachineEvent event;
+public class StrmPrivacyEventDTO {
+    private final StrmEvent event;
     private final SerializationType serializationType;
 
     @Builder
-    public StreamMachineEventDTO(StreamMachineEvent event, SerializationType serializationType) {
+    public StrmPrivacyEventDTO(StrmEvent event, SerializationType serializationType) {
         this.event = event;
         this.serializationType = serializationType;
     }
@@ -39,8 +39,8 @@ public class StreamMachineEventDTO {
 
     public byte[] serialize() {
         try {
-            final Object streamMachineSchema = event.getSchema();
-            final EventSerializer serializer = SerializerProvider.getSerializer(getSchemaRef(), streamMachineSchema);
+            final Object strmEventSchema = event.getSchema();
+            final EventSerializer serializer = SerializerProvider.getSerializer(getSchemaRef(), strmEventSchema);
             return serializer.serialize(event, serializationType);
         } catch (IOException e) {
             e.printStackTrace();

@@ -1,10 +1,10 @@
-package io.streammachine.driver.client;
+package io.strmprivacy.driver.client;
 
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
-import io.streammachine.driver.domain.Config;
-import io.streammachine.driver.domain.StreamMachineException;
+import io.strmprivacy.driver.domain.Config;
+import io.strmprivacy.driver.domain.StrmPrivacyException;
 import lombok.Builder;
 import lombok.extern.slf4j.Slf4j;
 import org.eclipse.jetty.client.HttpClient;
@@ -53,7 +53,7 @@ class AuthService {
         try {
             this.httpClient.start();
         } catch (Exception e) {
-            throw new IllegalStateException("An unexpected error occurred while starting a new AuthService for Stream Machine.", e);
+            throw new IllegalStateException("An unexpected error occurred while starting a new AuthService for Strm Privacy.", e);
         }
 
         try {
@@ -70,7 +70,7 @@ class AuthService {
         try {
             latch.await();
         } catch (InterruptedException e) {
-            throw new IllegalStateException("Error while setting up authentication for Stream Machine", e);
+            throw new IllegalStateException("Error while setting up authentication for Strm Privacy", e);
         }
     }
 
@@ -83,7 +83,7 @@ class AuthService {
             this.timer.cancel();
             this.httpClient.stop();
         } catch (Exception e) {
-            throw new StreamMachineException("Error stopping AuthService HttpClient", e);
+            throw new StrmPrivacyException("Error stopping AuthService HttpClient", e);
         }
     }
 

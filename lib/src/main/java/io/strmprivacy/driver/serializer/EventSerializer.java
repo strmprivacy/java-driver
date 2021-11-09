@@ -1,4 +1,4 @@
-package io.streammachine.driver.serializer;
+package io.strmprivacy.driver.serializer;
 
 import java.io.IOException;
 

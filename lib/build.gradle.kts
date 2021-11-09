@@ -21,7 +21,7 @@ val javadocJar = tasks.register("javadocJar", Jar::class) {
 }
 
 dependencies {
-    implementation("io.streammachine.schemas:schema-common:1.0.0")
+    implementation("io.strmprivacy.schemas:schema-common:1.1.2")
     implementation("com.github.fge:json-schema-validator:2.2.6")
     implementation("org.apache.avro:avro:1.10.0")
     implementation("org.projectlombok:lombok:$lombokVersion")
@@ -52,14 +52,14 @@ publishing {
             artifact(sourcesJar)
             artifact(javadocJar)
 
-            groupId = "io.streammachine"
+            groupId = "io.strmprivacy"
             artifactId = "java-driver"
             version = project.version.toString()
 
             pom {
                 name.set("$groupId:$artifactId")
-                description.set("Java driver for interacting with Stream Machine.")
-                url.set("https://streammachine.io")
+                description.set("Java driver for interacting with Strm Privacy.")
+                url.set("https://strmprivacy.io")
 
                 licenses {
                     license {
@@ -71,16 +71,16 @@ publishing {
                 developers {
                     developer {
                         name.set("Stream Machine B.V.")
-                        email.set("apis@streammachine.io")
+                        email.set("apis@strmprivacy.io")
                         organization.set("Stream Machine B.V.")
-                        organizationUrl.set("https://streammachine.io")
+                        organizationUrl.set("https://strmprivacy.io")
                     }
                 }
 
                 scm {
-                    url.set("https://github.com/streammachineio/java-driver")
-                    connection.set("scm:git:ssh://git@github.com:streammachineio/java-driver.git")
-                    developerConnection.set("scm:git:ssh://git@github.com:streammachineio/java-driver.git")
+                    url.set("https://github.com/strmprivacy/java-driver")
+                    connection.set("scm:git:ssh://git@github.com:strmprivacy/java-driver.git")
+                    developerConnection.set("scm:git:ssh://git@github.com:strmprivacy/java-driver.git")
                 }
             }
         }

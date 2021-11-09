@@ -1,4 +1,4 @@
-package io.streammachine.driver.common;
+package io.strmprivacy.driver.common;
 
 import org.eclipse.jetty.client.HttpContentResponse;
 import org.eclipse.jetty.client.HttpResponseException;

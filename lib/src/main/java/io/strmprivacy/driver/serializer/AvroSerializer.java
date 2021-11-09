@@ -1,4 +1,4 @@
-package io.streammachine.driver.serializer;
+package io.strmprivacy.driver.serializer;
 
 import lombok.extern.slf4j.Slf4j;
 import org.apache.avro.Schema;

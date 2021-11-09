@@ -1,4 +1,4 @@
-package io.streammachine.driver.domain;
+package io.strmprivacy.driver.domain;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

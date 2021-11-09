@@ -1,9 +1,9 @@
-package io.streammachine.driver.client;
+package io.strmprivacy.driver.client;
 
-import io.streammachine.driver.common.WebSocketConsumer;
-import io.streammachine.driver.domain.Config;
-import io.streammachine.schemas.StreamMachineEvent;
-import io.streammachine.driver.serializer.SerializationType;
+import io.strmprivacy.driver.common.WebSocketConsumer;
+import io.strmprivacy.driver.domain.Config;
+import io.strmprivacy.driver.serializer.SerializationType;
+import io.strmprivacy.schemas.StrmEvent;
 import lombok.Builder;
 import lombok.extern.slf4j.Slf4j;
 import org.eclipse.jetty.client.api.ContentResponse;
@@ -12,29 +12,29 @@ import java.util.concurrent.CompletableFuture;
 
 
 /**
- * Talks to the Stream machine, both to the gateway and the egress.
+ * Talks to the Strm Privacy, both to the gateway and the egress.
  */
 @Slf4j
-public class StreamMachineClient {
+public class StrmPrivacyClient {
     private final AuthService authService;
     private final SenderService senderService;
     private final ReceiverService receiverService;
 
     @Builder
-    public StreamMachineClient(String billingId, String clientId, String clientSecret, Config config) {
+    public StrmPrivacyClient(String billingId, String clientId, String clientSecret, Config config) {
         this.authService = new AuthService(billingId, clientId, clientSecret, config);
         this.senderService = new SenderService(authService, config);
         this.receiverService = new ReceiverService(authService, config);
     }
 
     /**
-     * send a StreamMachineEvent.
+     * send an StrmEvent.
      *
      * @param event the event.
      * @param type  the serialization type. only for Avro
      * @return future containing the content response
      */
-    public CompletableFuture<ContentResponse> send(StreamMachineEvent event, SerializationType type) {
+    public CompletableFuture<ContentResponse> send(StrmEvent event, SerializationType type) {
         return senderService.send(event, type);
     }
 
