@@ -12,7 +12,7 @@ public class Config {
     @Builder.Default
     private final String gatewayScheme = "https";
     @Builder.Default
-    private final String gatewayHost = "in.strm.services";
+    private final String gatewayHost = "events.strmprivacy.io";
     @Builder.Default
     private final String gatewayEndpoint = "/event";
     @Builder.Default
@@ -23,7 +23,7 @@ public class Config {
     @Builder.Default
     private final String egressWsScheme = "wss";
     @Builder.Default
-    private final String egressHost = "out.strm.services";
+    private final String egressHost = "websocket.strmprivacy.io";
     @Builder.Default
     private final String egressWsEndpoint = "/ws";
     private final String egressHealthEndpoint = "/is-alive";
@@ -31,7 +31,7 @@ public class Config {
     @Builder.Default
     private final String stsScheme = "https";
     @Builder.Default
-    private final String stsHost = "auth.strm.services";
+    private final String stsHost = "sts.strmprivacy.io";
     @Builder.Default
     private final String stsAuthEndpoint = "/auth";
     @Builder.Default
