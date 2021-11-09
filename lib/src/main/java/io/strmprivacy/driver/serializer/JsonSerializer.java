@@ -1,4 +1,4 @@
-package io.streammachine.driver.serializer;
+package io.strmprivacy.driver.serializer;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;

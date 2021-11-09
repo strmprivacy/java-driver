@@ -1,11 +1,11 @@
-package io.streammachine.driver.client;
+package io.strmprivacy.driver.client;
 
-import io.streammachine.driver.common.CompletableFutureResponseListener;
-import io.streammachine.driver.domain.Config;
-import io.streammachine.driver.domain.StreamMachineEventDTO;
-import io.streammachine.driver.domain.StreamMachineException;
-import io.streammachine.driver.serializer.SerializationType;
-import io.streammachine.schemas.StreamMachineEvent;
+import io.strmprivacy.driver.common.CompletableFutureResponseListener;
+import io.strmprivacy.driver.domain.Config;
+import io.strmprivacy.driver.domain.StrmPrivacyEventDTO;
+import io.strmprivacy.driver.domain.StrmPrivacyException;
+import io.strmprivacy.driver.serializer.SerializationType;
+import io.strmprivacy.schemas.StrmEvent;
 import org.eclipse.jetty.client.HttpClient;
 import org.eclipse.jetty.client.api.ContentResponse;
 import org.eclipse.jetty.client.util.BytesContentProvider;
@@ -37,12 +37,12 @@ class SenderService {
             http2Client.start();
             httpClient.start();
         } catch (Exception e) {
-            throw new IllegalStateException("An unexpected error occurred while starting a new Sender for Stream Machine.", e);
+            throw new IllegalStateException("An unexpected error occurred while starting a new Sender for Strm Privacy.", e);
         }
     }
 
-    public CompletableFuture<ContentResponse> send(StreamMachineEvent event, SerializationType type) {
-        StreamMachineEventDTO dto = new StreamMachineEventDTO(event, type);
+    public CompletableFuture<ContentResponse> send(StrmEvent event, SerializationType type) {
+        StrmPrivacyEventDTO dto = new StrmPrivacyEventDTO(event, type);
         CompletableFuture<ContentResponse> completableFuture = new CompletableFuture<>();
 
         httpClient.POST(this.endpointUri)
@@ -62,11 +62,11 @@ class SenderService {
     }
 
     public void stop() {
-        StreamMachineException exception = null;
+        StrmPrivacyException exception = null;
         try {
             this.httpClient.stop();
         } catch (Exception e) {
-            exception = new StreamMachineException("Error stopping SenderService HttpClient", e);
+            exception = new StrmPrivacyException("Error stopping SenderService HttpClient", e);
         }
         try {
             this.http2Client.stop();
@@ -74,7 +74,7 @@ class SenderService {
             if (exception != null) {
                 exception.addSuppressed(e);
             } else {
-                exception = new StreamMachineException("Error stopping SenderService Http2Client", e);
+                exception = new StrmPrivacyException("Error stopping SenderService Http2Client", e);
             }
         }
 

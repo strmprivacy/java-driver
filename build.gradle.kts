@@ -26,10 +26,12 @@ ext["tag"] = tag
 rootProject.version = if (tag != null || branch == "master") project.version else "${project.version}-SNAPSHOT"
 
 nexusPublishing {
-    packageGroup.set("io.streammachine")
+    packageGroup.set("io.strmprivacy")
 
     repositories {
         sonatype {
+            nexusUrl.set(uri("https://s01.oss.sonatype.org/service/local/"))
+            snapshotRepositoryUrl.set(uri("https://s01.oss.sonatype.org/content/repositories/snapshots/"))
             username.set(base64Decode("sonatypeUsername"))
             password.set(base64Decode("sonatypePassword"))
         }

@@ -1,12 +1,12 @@
-# Java Driver for Stream Machine
+# Java Driver for Strm Privacy
 
 [![Maven][maven-version-image]][maven-version-link]
 
-See the matching [examples](https://github.com/streammachineio/java-examples) in order to use the Java driver.
+See the matching [examples](https://github.com/strmprivacy/java-examples) in order to use the Java driver.
 
 ## Need help?
 
-See our [documentation](https://docs.streammachine.io) or [reach out to us](https://docs.streammachine.io).
+See our [documentation](https://docs.strmprivacy.io) or [reach out to us](https://docs.strmprivacy.io).
 
-[maven-version-image]: https://img.shields.io/maven-central/v/io.streammachine/java-driver.svg
-[maven-version-link]: https://search.maven.org/artifact/io.streammachine/java-driver
+[maven-version-image]: https://img.shields.io/maven-central/v/io.strmprivacy/java-driver.svg
+[maven-version-link]: https://search.maven.org/artifact/io.strmprivacy/java-driver

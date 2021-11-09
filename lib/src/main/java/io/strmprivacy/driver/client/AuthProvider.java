@@ -1,4 +1,4 @@
-package io.streammachine.driver.client;
+package io.strmprivacy.driver.client;
 
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
