@@ -1,21 +1,3 @@
-# [2.0.0](https://github.com/streammachineio/java-driver/compare/v1.0.2...v2.0.0) (2021-11-10)
-
-
-### Bug Fixes
-
-* update configuration defaults ([13d0fc2](https://github.com/streammachineio/java-driver/commit/13d0fc2dabed0e1b46a35598323f0279fd85b30c))
-
-
-### Features
-
-* naming consistency ([f8e11c7](https://github.com/streammachineio/java-driver/commit/f8e11c71aa3a51003f9667f28e6e51200736e110))
-* rename to strm privacy ([4bd77aa](https://github.com/streammachineio/java-driver/commit/4bd77aa9f8981f609dedc6495e7ce7e48ddc0844))
-
-
-### BREAKING CHANGES
-
-* StreamMachineEvent -> StrmPrivacyEvent
-
 ## [1.0.2](https://github.com/strmprivacy/java-driver/compare/v1.0.1...v1.0.2) (2021-09-24)
 
 
