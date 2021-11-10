@@ -1,25 +1,25 @@
-## [1.0.2](https://github.com/streammachineio/java-driver/compare/v1.0.1...v1.0.2) (2021-09-24)
+## [1.0.2](https://github.com/strmprivacy/java-driver/compare/v1.0.1...v1.0.2) (2021-09-24)
 
 
 ### Bug Fixes
 
-* fail CompletableFuture on http errors ([#7](https://github.com/streammachineio/java-driver/issues/7)) ([30e734c](https://github.com/streammachineio/java-driver/commit/30e734c15b9c5cb6f43d214080a78fc32bfd6168))
+* fail CompletableFuture on http errors ([#7](https://github.com/strmprivacy/java-driver/issues/7)) ([30e734c](https://github.com/strmprivacy/java-driver/commit/30e734c15b9c5cb6f43d214080a78fc32bfd6168))
 
-## [1.0.1](https://github.com/streammachineio/java-driver/compare/v1.0.0...v1.0.1) (2021-08-06)
+## [1.0.1](https://github.com/strmprivacy/java-driver/compare/v1.0.0...v1.0.1) (2021-08-06)
 
 
 ### Bug Fixes
 
-* set compile scope for specific transitive dependencies to fix examples ([92ae940](https://github.com/streammachineio/java-driver/commit/92ae9402237bca87d994ba3f3226a34d333b342c))
+* set compile scope for specific transitive dependencies to fix examples ([92ae940](https://github.com/strmprivacy/java-driver/commit/92ae9402237bca87d994ba3f3226a34d333b342c))
 
-# [1.0.0](https://github.com/streammachineio/java-driver/compare/v0.1.0...v1.0.0) (2021-08-06)
+# [1.0.0](https://github.com/strmprivacy/java-driver/compare/v0.1.0...v1.0.0) (2021-08-06)
 
 
 ### Features
 
-* added a stop method to shut down the client ([cdcee6d](https://github.com/streammachineio/java-driver/commit/cdcee6d7a5bb1843d4cf776f7a0bad1475ff5274))
-* convert to gradle; add support for non legacy schemas ([e84135f](https://github.com/streammachineio/java-driver/commit/e84135f44ff8fdbfa3fcb7b7c9fbe374284f8bbb))
-* private schemas and contracts ([0b3cb35](https://github.com/streammachineio/java-driver/commit/0b3cb35f7628b114d69aaf24e362363df91b101a))
+* added a stop method to shut down the client ([cdcee6d](https://github.com/strmprivacy/java-driver/commit/cdcee6d7a5bb1843d4cf776f7a0bad1475ff5274))
+* convert to gradle; add support for non legacy schemas ([e84135f](https://github.com/strmprivacy/java-driver/commit/e84135f44ff8fdbfa3fcb7b7c9fbe374284f8bbb))
+* private schemas and contracts ([0b3cb35](https://github.com/strmprivacy/java-driver/commit/0b3cb35f7628b114d69aaf24e362363df91b101a))
 
 
 ### BREAKING CHANGES
@@ -50,4 +50,4 @@
 
 ### Features
 * Initial release of Java Driver
-* Supports authentication, sending and receiving (server sent) events to/from streammachine.io
+* Supports authentication, sending and receiving (server sent) events to/from strmprivacy.io

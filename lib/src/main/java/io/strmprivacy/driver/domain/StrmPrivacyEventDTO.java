@@ -4,7 +4,7 @@ import io.strmprivacy.driver.serializer.EventSerializer;
 import io.strmprivacy.driver.serializer.SerializationType;
 import io.strmprivacy.driver.serializer.SerializerProvider;
 import io.strmprivacy.driver.serializer.UnsupportedSerializationTypeException;
-import io.strmprivacy.schemas.StrmEvent;
+import io.strmprivacy.schemas.StrmPrivacyEvent;
 import lombok.Builder;
 import lombok.Getter;
 
@@ -12,11 +12,11 @@ import java.io.IOException;
 
 @Getter
 public class StrmPrivacyEventDTO {
-    private final StrmEvent event;
+    private final StrmPrivacyEvent event;
     private final SerializationType serializationType;
 
     @Builder
-    public StrmPrivacyEventDTO(StrmEvent event, SerializationType serializationType) {
+    public StrmPrivacyEventDTO(StrmPrivacyEvent event, SerializationType serializationType) {
         this.event = event;
         this.serializationType = serializationType;
     }
@@ -39,8 +39,8 @@ public class StrmPrivacyEventDTO {
 
     public byte[] serialize() {
         try {
-            final Object strmEventSchema = event.getSchema();
-            final EventSerializer serializer = SerializerProvider.getSerializer(getSchemaRef(), strmEventSchema);
+            final Object StrmPrivacyEventSchema = event.getSchema();
+            final EventSerializer serializer = SerializerProvider.getSerializer(getSchemaRef(), StrmPrivacyEventSchema);
             return serializer.serialize(event, serializationType);
         } catch (IOException e) {
             e.printStackTrace();

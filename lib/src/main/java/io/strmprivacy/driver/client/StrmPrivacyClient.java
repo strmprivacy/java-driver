@@ -3,7 +3,7 @@ package io.strmprivacy.driver.client;
 import io.strmprivacy.driver.common.WebSocketConsumer;
 import io.strmprivacy.driver.domain.Config;
 import io.strmprivacy.driver.serializer.SerializationType;
-import io.strmprivacy.schemas.StrmEvent;
+import io.strmprivacy.schemas.StrmPrivacyEvent;
 import lombok.Builder;
 import lombok.extern.slf4j.Slf4j;
 import org.eclipse.jetty.client.api.ContentResponse;
@@ -12,7 +12,7 @@ import java.util.concurrent.CompletableFuture;
 
 
 /**
- * Talks to the Strm Privacy, both to the gateway and the egress.
+ * Talks to the STRM Privacy, both to the gateway and the egress.
  */
 @Slf4j
 public class StrmPrivacyClient {
@@ -28,13 +28,13 @@ public class StrmPrivacyClient {
     }
 
     /**
-     * send an StrmEvent.
+     * send an StrmPrivacyEvent.
      *
      * @param event the event.
      * @param type  the serialization type. only for Avro
      * @return future containing the content response
      */
-    public CompletableFuture<ContentResponse> send(StrmEvent event, SerializationType type) {
+    public CompletableFuture<ContentResponse> send(StrmPrivacyEvent event, SerializationType type) {
         return senderService.send(event, type);
     }
 

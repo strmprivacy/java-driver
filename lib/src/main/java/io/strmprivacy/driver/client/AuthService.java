@@ -53,7 +53,7 @@ class AuthService {
         try {
             this.httpClient.start();
         } catch (Exception e) {
-            throw new IllegalStateException("An unexpected error occurred while starting a new AuthService for Strm Privacy.", e);
+            throw new IllegalStateException("An unexpected error occurred while starting a new AuthService for STRM Privacy.", e);
         }
 
         try {
@@ -70,7 +70,7 @@ class AuthService {
         try {
             latch.await();
         } catch (InterruptedException e) {
-            throw new IllegalStateException("Error while setting up authentication for Strm Privacy", e);
+            throw new IllegalStateException("Error while setting up authentication for STRM Privacy", e);
         }
     }
 

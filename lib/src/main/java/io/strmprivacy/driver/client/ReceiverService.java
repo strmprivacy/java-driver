@@ -56,7 +56,7 @@ class ReceiverService {
         try {
             httpClient.start();
         } catch (Exception e) {
-            throw new IllegalStateException("An unexpected error occurred while starting a new Receiver for Strm Privacy.", e);
+            throw new IllegalStateException("An unexpected error occurred while starting a new Receiver for STRM Privacy.", e);
         }
     }
 
