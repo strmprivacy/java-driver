@@ -5,7 +5,7 @@ import io.strmprivacy.driver.domain.Config;
 import io.strmprivacy.driver.domain.StrmPrivacyEventDTO;
 import io.strmprivacy.driver.domain.StrmPrivacyException;
 import io.strmprivacy.driver.serializer.SerializationType;
-import io.strmprivacy.schemas.StrmEvent;
+import io.strmprivacy.schemas.StrmPrivacyEvent;
 import org.eclipse.jetty.client.HttpClient;
 import org.eclipse.jetty.client.api.ContentResponse;
 import org.eclipse.jetty.client.util.BytesContentProvider;
@@ -37,11 +37,11 @@ class SenderService {
             http2Client.start();
             httpClient.start();
         } catch (Exception e) {
-            throw new IllegalStateException("An unexpected error occurred while starting a new Sender for Strm Privacy.", e);
+            throw new IllegalStateException("An unexpected error occurred while starting a new Sender for STRM Privacy.", e);
         }
     }
 
-    public CompletableFuture<ContentResponse> send(StrmEvent event, SerializationType type) {
+    public CompletableFuture<ContentResponse> send(StrmPrivacyEvent event, SerializationType type) {
         StrmPrivacyEventDTO dto = new StrmPrivacyEventDTO(event, type);
         CompletableFuture<ContentResponse> completableFuture = new CompletableFuture<>();
 

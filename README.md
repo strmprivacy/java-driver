@@ -1,4 +1,4 @@
-# Java Driver for Strm Privacy
+# Java Driver for STRM Privacy
 
 [![Maven][maven-version-image]][maven-version-link]
 

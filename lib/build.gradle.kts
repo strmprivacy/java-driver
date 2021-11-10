@@ -21,7 +21,7 @@ val javadocJar = tasks.register("javadocJar", Jar::class) {
 }
 
 dependencies {
-    implementation("io.strmprivacy.schemas:schema-common:1.1.2")
+    implementation("io.strmprivacy.schemas:schema-common:1.2.0")
     implementation("com.github.fge:json-schema-validator:2.2.6")
     implementation("org.apache.avro:avro:1.10.0")
     implementation("org.projectlombok:lombok:$lombokVersion")
@@ -58,7 +58,7 @@ publishing {
 
             pom {
                 name.set("$groupId:$artifactId")
-                description.set("Java driver for interacting with Strm Privacy.")
+                description.set("Java driver for interacting with STRM Privacy.")
                 url.set("https://strmprivacy.io")
 
                 licenses {
