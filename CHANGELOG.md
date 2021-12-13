@@ -1,3 +1,11 @@
+## [2.0.1](https://github.com/strmprivacy/java-driver/compare/v2.0.0...v2.0.1) (2021-12-13)
+
+
+### Bug Fixes
+
+* removed unused/unwanted log4j dependency ([492240a](https://github.com/strmprivacy/java-driver/commit/492240a15fdc1ddaef0da885c268328b861de13f))
+* upgraded grgit and node ([dfe7133](https://github.com/strmprivacy/java-driver/commit/dfe71336081c8fea0cc09f873a308721dac860f9))
+
 # [2.0.0](https://github.com/streammachineio/java-driver/compare/v1.0.2...v2.0.0) (2021-11-10)
 
 
