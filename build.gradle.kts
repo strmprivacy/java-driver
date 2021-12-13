@@ -3,7 +3,7 @@ import java.util.*
 
 plugins {
     id("java-library")
-    id("org.ajoberstar.grgit") version "4.1.0"
+    id("org.ajoberstar.grgit") version "4.1.1"
     id("io.github.gradle-nexus.publish-plugin") version "1.1.0"
 }
 
