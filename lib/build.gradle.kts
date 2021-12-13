@@ -26,7 +26,6 @@ dependencies {
     implementation("org.apache.avro:avro:1.10.0")
     implementation("org.projectlombok:lombok:$lombokVersion")
     annotationProcessor("org.projectlombok:lombok:$lombokVersion")
-    implementation("org.slf4j:slf4j-log4j12:$slf4jVersion")
     implementation("org.slf4j:slf4j-api:$slf4jVersion")
 
     implementation("com.fasterxml.jackson.core:jackson-databind:2.8.8")
