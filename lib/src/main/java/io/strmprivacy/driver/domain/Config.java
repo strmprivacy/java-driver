@@ -7,12 +7,6 @@ public class Config {
     private String gatewayEndpoint;
     private int gatewayPort;
 
-    private String egressScheme;
-    private String egressWsScheme;
-    private String egressHost;
-    private String egressWsEndpoint;
-    private String egressHealthEndpoint;
-
     private String stsScheme;
     private String stsHost;
     private String stsAuthEndpoint;
@@ -23,11 +17,6 @@ public class Config {
         setGatewayHost(builder.gatewayHost);
         setGatewayEndpoint(builder.gatewayEndpoint);
         setGatewayPort(builder.gatewayPort);
-        setEgressScheme(builder.egressScheme);
-        setEgressWsScheme(builder.egressWsScheme);
-        setEgressHost(builder.egressHost);
-        setEgressWsEndpoint(builder.egressWsEndpoint);
-        setEgressHealthEndpoint(builder.egressHealthEndpoint);
         setStsScheme(builder.stsScheme);
         setStsHost(builder.stsHost);
         setStsAuthEndpoint(builder.stsAuthEndpoint);
@@ -76,46 +65,6 @@ public class Config {
         this.gatewayPort = gatewayPort;
     }
 
-    public String getEgressScheme() {
-        return egressScheme;
-    }
-
-    public void setEgressScheme(String egressScheme) {
-        this.egressScheme = egressScheme;
-    }
-
-    public String getEgressWsScheme() {
-        return egressWsScheme;
-    }
-
-    public void setEgressWsScheme(String egressWsScheme) {
-        this.egressWsScheme = egressWsScheme;
-    }
-
-    public String getEgressHost() {
-        return egressHost;
-    }
-
-    public void setEgressHost(String egressHost) {
-        this.egressHost = egressHost;
-    }
-
-    public String getEgressWsEndpoint() {
-        return egressWsEndpoint;
-    }
-
-    public void setEgressWsEndpoint(String egressWsEndpoint) {
-        this.egressWsEndpoint = egressWsEndpoint;
-    }
-
-    public String getEgressHealthEndpoint() {
-        return egressHealthEndpoint;
-    }
-
-    public void setEgressHealthEndpoint(String egressHealthEndpoint) {
-        this.egressHealthEndpoint = egressHealthEndpoint;
-    }
-
     public String getStsScheme() {
         return stsScheme;
     }
@@ -154,12 +103,6 @@ public class Config {
         private String gatewayEndpoint = "/event";
         private int gatewayPort = 443;
 
-        private String egressScheme = "https";
-        private String egressWsScheme = "wss";
-        private String egressHost = "websocket.strmprivacy.io";
-        private String egressWsEndpoint = "/ws";
-        private String egressHealthEndpoint = "/is-alive";
-
         private String stsScheme = "https";
         private String stsHost = "sts.strmprivacy.io";
         private String stsAuthEndpoint = "/auth";
@@ -185,31 +128,6 @@ public class Config {
 
         public Builder gatewayPort(int val) {
             gatewayPort = val;
-            return this;
-        }
-
-        public Builder egressScheme(String val) {
-            egressScheme = val;
-            return this;
-        }
-
-        public Builder egressWsScheme(String val) {
-            egressWsScheme = val;
-            return this;
-        }
-
-        public Builder egressHost(String val) {
-            egressHost = val;
-            return this;
-        }
-
-        public Builder egressWsEndpoint(String val) {
-            egressWsEndpoint = val;
-            return this;
-        }
-
-        public Builder egressHealthEndpoint(String val) {
-            egressHealthEndpoint = val;
             return this;
         }
 
