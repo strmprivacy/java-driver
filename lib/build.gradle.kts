@@ -1,6 +1,5 @@
 import java.util.*
 
-val lombokVersion by lazy { "1.18.12" }
 val slf4jVersion by lazy { "1.7.30" }
 val jerseyVersion by lazy { "2.31" }
 val jettyVersion by lazy { "9.4.38.v20210224" }
@@ -22,25 +21,17 @@ val javadocJar = tasks.register("javadocJar", Jar::class) {
 
 dependencies {
     implementation("io.strmprivacy.schemas:schema-common:2.0.0")
-    implementation("com.github.fge:json-schema-validator:2.2.6")
     implementation("org.apache.avro:avro:1.10.0")
-    implementation("org.projectlombok:lombok:$lombokVersion")
-    annotationProcessor("org.projectlombok:lombok:$lombokVersion")
     implementation("org.slf4j:slf4j-api:$slf4jVersion")
 
     implementation("com.fasterxml.jackson.core:jackson-databind:2.8.8")
     api("org.glassfish.jersey.core:jersey-client:$jerseyVersion")
-    api("org.glassfish.jersey.media:jersey-media-sse:$jerseyVersion")
     api("org.glassfish.jersey.inject:jersey-hk2:$jerseyVersion")
 
     api("org.eclipse.jetty:jetty-client:$jettyVersion")
     api("org.eclipse.jetty.http2:http2-client:$jettyVersion")
     api("org.eclipse.jetty.http2:http2-http-client-transport:$jettyVersion")
-    api("org.eclipse.jetty.websocket:websocket-client:$jettyVersion")
-    api("org.eclipse.jetty.websocket:websocket-common:$jettyVersion")
 
-    testImplementation("org.junit.jupiter:junit-jupiter:5.6.2")
-    testImplementation("com.github.tomakehurst:wiremock:2.26.1")
 }
 
 publishing {

@@ -5,13 +5,13 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import io.strmprivacy.driver.domain.Config;
 import io.strmprivacy.driver.domain.StrmPrivacyException;
-import lombok.Builder;
-import lombok.extern.slf4j.Slf4j;
 import org.eclipse.jetty.client.HttpClient;
 import org.eclipse.jetty.client.api.ContentResponse;
 import org.eclipse.jetty.client.util.StringContentProvider;
 import org.eclipse.jetty.http.HttpHeader;
 import org.eclipse.jetty.util.ssl.SslContextFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.net.URI;
@@ -25,10 +25,10 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeoutException;
 
 
-@Slf4j
 class AuthService {
     private static final ObjectMapper MAPPER = new ObjectMapper()
             .configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+    private static final Logger log = LoggerFactory.getLogger(AuthService.class);
 
     private final String billingId;
     private final String clientId;
@@ -43,7 +43,6 @@ class AuthService {
     private final String authUri;
     private final String refreshUri;
 
-    @Builder
     public AuthService(String billingId, String clientId, String clientSecret, Config config) {
         this.billingId = billingId;
         this.clientId = clientId;
@@ -116,9 +115,9 @@ class AuthService {
 
     private void doPost(String uri, ObjectNode payload) throws IOException, InterruptedException, TimeoutException, ExecutionException {
         ContentResponse response = httpClient.POST(uri)
-                                             .content(new StringContentProvider(MAPPER.writeValueAsString(payload)))
-                                             .header(HttpHeader.CONTENT_TYPE, "application/json; charset=UTF-8")
-                                             .send();
+                .content(new StringContentProvider(MAPPER.writeValueAsString(payload)))
+                .header(HttpHeader.CONTENT_TYPE, "application/json; charset=UTF-8")
+                .send();
 
         this.authProvider = MAPPER.readValue(response.getContentAsString(), AuthProvider.class);
     }
