@@ -14,14 +14,33 @@ import java.util.concurrent.CompletableFuture;
  * Talks to the STRM Privacy, both to the gateway and the egress.
  */
 public class StrmPrivacyClient {
-    private final AuthService authService;
-    private final SenderService senderService;
+    private AuthService authService;
+    private SenderService senderService;
 
     private static final Logger log = LoggerFactory.getLogger(StrmPrivacyClient.class);
+    private String billingId;
+    private String clientId;
+    private String clientSecret;
+    private Config config;
 
-    public StrmPrivacyClient(String billingId, String clientId, String clientSecret, Config config) {
+    public StrmPrivacyClient(String billingId,
+                             String clientId,
+                             String clientSecret,
+                             Config config) {
+        this.billingId = billingId;
+        this.clientId = clientId;
+        this.clientSecret = clientSecret;
+        this.config = config;
         this.authService = new AuthService(billingId, clientId, clientSecret, config);
         this.senderService = new SenderService(authService, config);
+    }
+
+    private StrmPrivacyClient(Builder builder) {
+        this(builder.billingId, builder.clientId, builder.clientSecret, builder.config);
+    }
+
+    public static Builder builder() {
+        return new Builder();
     }
 
     /**
@@ -41,5 +60,39 @@ public class StrmPrivacyClient {
     public void stop() {
         senderService.stop();
         authService.stop();
+    }
+
+    public static final class Builder {
+        private String billingId;
+        private String clientId;
+        private String clientSecret;
+        private Config config;
+
+        private Builder() {
+        }
+
+        public StrmPrivacyClient build() {
+            return new StrmPrivacyClient(this);
+        }
+
+        public Builder billingId(String val) {
+            billingId = val;
+            return this;
+        }
+
+        public Builder clientId(String val) {
+            clientId = val;
+            return this;
+        }
+
+        public Builder clientSecret(String val) {
+            clientSecret = val;
+            return this;
+        }
+
+        public Builder config(Config val) {
+            config = val;
+            return this;
+        }
     }
 }

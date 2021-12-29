@@ -2,36 +2,40 @@ package io.strmprivacy.driver.domain;
 
 
 public class Config {
-    private String gatewayScheme = "https";
-    private String gatewayHost = "events.strmprivacy.io";
-    private String gatewayEndpoint = "/event";
+    private String gatewayScheme;
+    private String gatewayHost;
+    private String gatewayEndpoint;
     private int gatewayPort = 443;
 
-    private String egressScheme = "https";
-    private String egressWsScheme = "wss";
-    private String egressHost = "websocket.strmprivacy.io";
-    private String egressWsEndpoint = "/ws";
-    private String egressHealthEndpoint = "/is-alive";
+    private String egressScheme;
+    private String egressWsScheme;
+    private String egressHost;
+    private String egressWsEndpoint;
+    private String egressHealthEndpoint;
 
-    private String stsScheme = "https";
-    private String stsHost = "sts.strmprivacy.io";
-    private String stsAuthEndpoint = "/auth";
-    private String stsRefreshEndpoint = "/refresh";
+    private String stsScheme;
+    private String stsHost;
+    private String stsAuthEndpoint;
+    private String stsRefreshEndpoint;
 
-    public Config(String gatewayScheme, String gatewayHost, String gatewayEndpoint, int gatewayPort, String egressScheme, String egressWsScheme, String egressHost, String egressWsEndpoint, String egressHealthEndpoint, String stsScheme, String stsHost, String stsAuthEndpoint, String stsRefreshEndpoint) {
-        this.gatewayScheme = gatewayScheme;
-        this.gatewayHost = gatewayHost;
-        this.gatewayEndpoint = gatewayEndpoint;
-        this.gatewayPort = gatewayPort;
-        this.egressScheme = egressScheme;
-        this.egressWsScheme = egressWsScheme;
-        this.egressHost = egressHost;
-        this.egressWsEndpoint = egressWsEndpoint;
-        this.egressHealthEndpoint = egressHealthEndpoint;
-        this.stsScheme = stsScheme;
-        this.stsHost = stsHost;
-        this.stsAuthEndpoint = stsAuthEndpoint;
-        this.stsRefreshEndpoint = stsRefreshEndpoint;
+    private Config(Builder builder) {
+        setGatewayScheme(builder.gatewayScheme);
+        setGatewayHost(builder.gatewayHost);
+        setGatewayEndpoint(builder.gatewayEndpoint);
+        setGatewayPort(builder.gatewayPort);
+        setEgressScheme(builder.egressScheme);
+        setEgressWsScheme(builder.egressWsScheme);
+        setEgressHost(builder.egressHost);
+        setEgressWsEndpoint(builder.egressWsEndpoint);
+        setEgressHealthEndpoint(builder.egressHealthEndpoint);
+        setStsScheme(builder.stsScheme);
+        setStsHost(builder.stsHost);
+        setStsAuthEndpoint(builder.stsAuthEndpoint);
+        setStsRefreshEndpoint(builder.stsRefreshEndpoint);
+    }
+
+    public static Builder builder() {
+        return new Builder();
     }
 
     public String getImplementationVersion() {
@@ -142,5 +146,95 @@ public class Config {
 
     public void setStsRefreshEndpoint(String stsRefreshEndpoint) {
         this.stsRefreshEndpoint = stsRefreshEndpoint;
+    }
+
+    public static final class Builder {
+        private String gatewayScheme = "https";
+        private String gatewayHost = "events.strmprivacy.io";
+        private String gatewayEndpoint = "/event";
+        private int gatewayPort = 443;
+
+        private String egressScheme = "https";
+        private String egressWsScheme = "wss";
+        private String egressHost = "websocket.strmprivacy.io";
+        private String egressWsEndpoint = "/ws";
+        private String egressHealthEndpoint = "/is-alive";
+
+        private String stsScheme = "https";
+        private String stsHost = "sts.strmprivacy.io";
+        private String stsAuthEndpoint = "/auth";
+        private String stsRefreshEndpoint = "/refresh";
+
+        private Builder() {
+        }
+
+        public Builder gatewayScheme(String val) {
+            gatewayScheme = val;
+            return this;
+        }
+
+        public Builder gatewayHost(String val) {
+            gatewayHost = val;
+            return this;
+        }
+
+        public Builder gatewayEndpoint(String val) {
+            gatewayEndpoint = val;
+            return this;
+        }
+
+        public Builder gatewayPort(int val) {
+            gatewayPort = val;
+            return this;
+        }
+
+        public Builder egressScheme(String val) {
+            egressScheme = val;
+            return this;
+        }
+
+        public Builder egressWsScheme(String val) {
+            egressWsScheme = val;
+            return this;
+        }
+
+        public Builder egressHost(String val) {
+            egressHost = val;
+            return this;
+        }
+
+        public Builder egressWsEndpoint(String val) {
+            egressWsEndpoint = val;
+            return this;
+        }
+
+        public Builder egressHealthEndpoint(String val) {
+            egressHealthEndpoint = val;
+            return this;
+        }
+
+        public Builder stsScheme(String val) {
+            stsScheme = val;
+            return this;
+        }
+
+        public Builder stsHost(String val) {
+            stsHost = val;
+            return this;
+        }
+
+        public Builder stsAuthEndpoint(String val) {
+            stsAuthEndpoint = val;
+            return this;
+        }
+
+        public Builder stsRefreshEndpoint(String val) {
+            stsRefreshEndpoint = val;
+            return this;
+        }
+
+        public Config build() {
+            return new Config(this);
+        }
     }
 }

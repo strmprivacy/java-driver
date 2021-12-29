@@ -5,6 +5,10 @@ class AuthProvider {
     private String refreshToken;
     private long expiresAt;
 
+    // for jackson
+    public AuthProvider() {
+
+    }
     public AuthProvider(String idToken, String refreshToken, long expiresAt) {
         this.idToken = idToken;
         this.refreshToken = refreshToken;
