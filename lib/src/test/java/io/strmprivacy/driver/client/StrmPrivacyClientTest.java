@@ -4,7 +4,6 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.github.tomakehurst.wiremock.junit5.WireMockRuntimeInfo;
 import com.github.tomakehurst.wiremock.junit5.WireMockTest;
 import io.strmprivacy.driver.domain.Config;
-import io.strmprivacy.driver.serializer.SerializationType;
 import io.strmprivacy.driver.serializer.SerializerTests;
 import io.strmprivacy.schemas.demo.v1.DemoEvent;
 import org.junit.jupiter.api.Test;
@@ -33,7 +32,7 @@ class StrmPrivacyClientTest {
                 .build();
 
         DemoEvent event = SerializerTests.avroDemoEvent();
-        client.send(event, SerializationType.AVRO_BINARY)
+        client.send(event)
                 .whenComplete((res, exc) -> assertEquals(204, res.getStatus()));
     }
 
@@ -52,7 +51,7 @@ class StrmPrivacyClientTest {
                 .build();
 
         SerializerTests.JsonSchemaDemoEvent event = SerializerTests.jsonSchemaDemoEvent();
-        client.send(event, SerializationType.JSON)
+        client.send(event)
                 .whenComplete((res, exc) -> assertEquals(204, res.getStatus()));
 
     }

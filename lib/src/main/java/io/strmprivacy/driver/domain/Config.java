@@ -5,7 +5,7 @@ public class Config {
     private String gatewayScheme;
     private String gatewayHost;
     private String gatewayEndpoint;
-    private int gatewayPort = 443;
+    private int gatewayPort;
 
     private String egressScheme;
     private String egressWsScheme;

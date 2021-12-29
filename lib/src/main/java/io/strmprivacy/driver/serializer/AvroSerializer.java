@@ -1,12 +1,10 @@
 package io.strmprivacy.driver.serializer;
 
 import org.apache.avro.Schema;
-import org.apache.avro.generic.GenericDatumWriter;
 import org.apache.avro.generic.GenericRecord;
 import org.apache.avro.io.BinaryEncoder;
 import org.apache.avro.io.DatumWriter;
 import org.apache.avro.io.EncoderFactory;
-import org.apache.avro.io.JsonEncoder;
 import org.apache.avro.specific.SpecificDatumWriter;
 
 import java.io.ByteArrayOutputStream;
@@ -14,8 +12,6 @@ import java.io.IOException;
 
 public class AvroSerializer implements EventSerializer {
 
-    //    private static final Logger log = LoggerFactory.getLogger(AvroSerializer.class);
-    private final Schema writerSchema;
     private DatumWriter<GenericRecord> writer;
 
     /**
@@ -24,7 +20,7 @@ public class AvroSerializer implements EventSerializer {
      * @param writerSchema the Avro writer schema
      */
     public AvroSerializer(Schema writerSchema) {
-        this.writerSchema = writerSchema;
+        //    private static final Logger log = LoggerFactory.getLogger(AvroSerializer.class);
         this.writer = new SpecificDatumWriter<>(writerSchema);
     }
 
@@ -33,32 +29,18 @@ public class AvroSerializer implements EventSerializer {
      * serialize a GenericRecord or something compatible (like DemoUserV1 in the tests)
      *
      * @param event             the avro record
-     * @param serializationType the kind of serialization to use for the event
      * @return a bytes representation of the record contents.
      * @throws IllegalStateException problem with the Avro serialization.
      */
-    public byte[] serialize(Object event, SerializationType serializationType) throws IllegalStateException, IOException {
+    public byte[] serialize(Object event) throws IllegalStateException, IOException {
         if (!(event instanceof GenericRecord)) {
             throw new IllegalArgumentException("Event is not of type GenericRecord");
         }
         GenericRecord msg = (GenericRecord) event;
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        switch (serializationType) {
-            case AVRO_BINARY: {
-                BinaryEncoder encoder = EncoderFactory.get().binaryEncoder(baos, null);
-                writer.write(msg, encoder);
-                encoder.flush();
-            }
-            break;
-            case AVRO_JSON: {
-                // JSON encoding of the object (a single record)
-                GenericDatumWriter<GenericRecord> jsonWriter = new GenericDatumWriter<GenericRecord>(writerSchema);
-                JsonEncoder encoder = EncoderFactory.get().jsonEncoder(writerSchema, baos);
-                jsonWriter.write(msg, encoder);
-                encoder.flush();
-            }
-        }
-        baos.flush();
+        BinaryEncoder encoder = EncoderFactory.get().binaryEncoder(baos, null);
+        writer.write(msg, encoder);
+        encoder.flush();
         return baos.toByteArray();
     }
 

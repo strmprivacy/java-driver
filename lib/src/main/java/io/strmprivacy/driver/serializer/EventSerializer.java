@@ -3,5 +3,5 @@ package io.strmprivacy.driver.serializer;
 import java.io.IOException;
 
 public interface EventSerializer {
-    byte[] serialize(Object event, SerializationType serializationType) throws IOException;
+    byte[] serialize(Object event) throws IOException;
 }

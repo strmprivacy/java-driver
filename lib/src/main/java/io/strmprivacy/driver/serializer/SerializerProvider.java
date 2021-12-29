@@ -12,25 +12,15 @@ public class SerializerProvider {
     private SerializerProvider() {
     }
 
-    // FIXME ensure that the caller gets the correct serializer type, regardless of the provided schemaId
-    // Now, it's possible for a caller to get an AvroSerializer, while expecting a JsonSerializer, since the schemaId
-    // can be the same by coincident
-    public static EventSerializer getSerializer(String schemaId, Object schema) {
-        final EventSerializer existingSerializer = serializers.get(schemaId);
-        if (existingSerializer == null) {
+    public static EventSerializer getSerializer(String schemaId_, Object schema) {
+        return serializers.computeIfAbsent(schemaId_, schemaId -> {
             if (schema instanceof Schema) {
-                final AvroSerializer serializer = new AvroSerializer((Schema) schema);
-                serializers.put(schemaId, serializer);
-                return serializer;
+                return new AvroSerializer((Schema) schema);
             } else if (schema instanceof JsonNode) {
-                final JsonSerializer serializer = new JsonSerializer((JsonNode) schema);
-                serializers.put(schemaId, serializer);
-                return serializer;
+                return new JsonSerializer((JsonNode) schema);
             } else {
                 throw new UnsupportedSerializationTypeException("Provided serialization type is not supported");
             }
-        }
-
-        return existingSerializer;
+        });
     }
 }

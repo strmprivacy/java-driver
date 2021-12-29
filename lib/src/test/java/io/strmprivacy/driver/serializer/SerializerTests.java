@@ -30,7 +30,7 @@ public class SerializerTests {
         DemoEvent event = avroDemoEvent();
         EventSerializer serializer = SerializerProvider.getSerializer(event.getSchemaRef(), event.getSchema());
         DemoEvent readBack = parseBytes(event.getSchema(),
-                serializer.serialize(event, SerializationType.AVRO_BINARY));
+                serializer.serialize(event));
         assertEquals(event, readBack);
     }
 
@@ -45,7 +45,7 @@ public class SerializerTests {
     void serializeJsonSchemaTest() throws IOException {
         JsonSchemaDemoEvent event = jsonSchemaDemoEvent();
         EventSerializer serializer = SerializerProvider.getSerializer(event.getSchemaRef(), event.getSchema());
-        byte[] bytes = serializer.serialize(event, SerializationType.JSON);
+        byte[] bytes = serializer.serialize(event);
         JsonSchemaDemoEvent readback = mapper.readValue(bytes, JsonSchemaDemoEvent.class);
         assertEquals(event, readback);
         assert (bytes.length > 0);

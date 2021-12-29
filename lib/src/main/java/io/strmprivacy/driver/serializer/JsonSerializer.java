@@ -17,7 +17,7 @@ public class JsonSerializer implements EventSerializer {
         this.schema = schema;
     }
 
-    public byte[] serialize(Object event, SerializationType serializationType) {
+    public byte[] serialize(Object event) {
         try {
             return MAPPER.writeValueAsBytes(event);
         } catch (JsonProcessingException e) {
