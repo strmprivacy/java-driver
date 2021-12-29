@@ -18,9 +18,8 @@ public class JsonSerializer implements EventSerializer {
     }
 
     public byte[] serialize(Object event, SerializationType serializationType) {
-        JsonNode node = MAPPER.convertValue(event, JsonNode.class);
         try {
-            return MAPPER.writeValueAsBytes(node);
+            return MAPPER.writeValueAsBytes(event);
         } catch (JsonProcessingException e) {
             log.error("Json processing error {}", e.getMessage());
             throw new RuntimeException(e);

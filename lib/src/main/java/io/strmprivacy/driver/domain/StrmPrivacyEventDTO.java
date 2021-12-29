@@ -35,13 +35,10 @@ public class StrmPrivacyEventDTO {
 
     public byte[] serialize() {
         try {
-            final Object StrmPrivacyEventSchema = event.getSchema();
-            final EventSerializer serializer = SerializerProvider.getSerializer(getSchemaRef(), StrmPrivacyEventSchema);
+            final EventSerializer serializer = SerializerProvider.getSerializer(getSchemaRef(), event.getSchema());
             return serializer.serialize(event, serializationType);
         } catch (IOException e) {
-            e.printStackTrace();
+            throw new RuntimeException(e);
         }
-
-        return null;
     }
 }

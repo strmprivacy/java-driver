@@ -1,7 +1,5 @@
+import org.gradle.api.tasks.testing.logging.TestLogEvent.*
 import java.util.*
-import org.gradle.api.tasks.testing.logging.TestLogEvent.FAILED
-import org.gradle.api.tasks.testing.logging.TestLogEvent.SKIPPED
-import org.gradle.api.tasks.testing.logging.TestLogEvent.STARTED
 
 val slf4jVersion by lazy { "1.7.30" }
 val jerseyVersion by lazy { "2.31" }
@@ -56,7 +54,7 @@ dependencies {
     testImplementation("org.junit.jupiter:junit-jupiter-api:5.8.2")
     testImplementation("org.junit.jupiter:junit-jupiter-params:5.8.2")
     testImplementation("ch.qos.logback:logback-classic:1.2.10")
-    testImplementation( "com.github.tomakehurst:wiremock-jre8:2.32.0")
+    testImplementation("com.github.tomakehurst:wiremock-jre8:2.32.0")
     testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:5.8.2")
 
 

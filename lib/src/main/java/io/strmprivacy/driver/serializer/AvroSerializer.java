@@ -8,15 +8,13 @@ import org.apache.avro.io.DatumWriter;
 import org.apache.avro.io.EncoderFactory;
 import org.apache.avro.io.JsonEncoder;
 import org.apache.avro.specific.SpecificDatumWriter;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 
 public class AvroSerializer implements EventSerializer {
 
-    private static final Logger log = LoggerFactory.getLogger(AvroSerializer.class);
+    //    private static final Logger log = LoggerFactory.getLogger(AvroSerializer.class);
     private final Schema writerSchema;
     private DatumWriter<GenericRecord> writer;
 

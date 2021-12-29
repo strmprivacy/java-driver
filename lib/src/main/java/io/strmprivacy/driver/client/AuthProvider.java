@@ -9,6 +9,7 @@ class AuthProvider {
     public AuthProvider() {
 
     }
+
     public AuthProvider(String idToken, String refreshToken, long expiresAt) {
         this.idToken = idToken;
         this.refreshToken = refreshToken;

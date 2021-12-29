@@ -1,32 +1,29 @@
 package io.strmprivacy.driver.client;
 
-import com.github.tomakehurst.wiremock.client.WireMock;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.github.tomakehurst.wiremock.junit5.WireMockRuntimeInfo;
 import com.github.tomakehurst.wiremock.junit5.WireMockTest;
 import io.strmprivacy.driver.domain.Config;
-import io.strmprivacy.driver.serializer.AvroSerializerTest;
 import io.strmprivacy.driver.serializer.SerializationType;
+import io.strmprivacy.driver.serializer.SerializerTests;
 import io.strmprivacy.schemas.demo.v1.DemoEvent;
-import org.eclipse.jetty.client.api.ContentResponse;
 import org.junit.jupiter.api.Test;
 
-import java.util.concurrent.CompletableFuture;
-
-import static org.junit.jupiter.api.Assertions.*;
+import static com.github.tomakehurst.wiremock.client.WireMock.aResponse;
+import static com.github.tomakehurst.wiremock.client.WireMock.post;
+import static com.github.tomakehurst.wiremock.client.WireMock.stubFor;
+import static com.github.tomakehurst.wiremock.client.WireMock.urlEqualTo;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @WireMockTest
 class StrmPrivacyClientTest {
 
     @Test
-    void testSend204(WireMockRuntimeInfo wireMockRuntimeInfo) {
+    void testSend204Avro(WireMockRuntimeInfo wireMockRuntimeInfo) {
 
-        Config config = Config.builder()
-                .gatewayHost("localhost")
-                .gatewayPort(wireMockRuntimeInfo.getHttpPort())
-                .gatewayScheme("http")
-                .build();
-        WireMock.stubFor(WireMock.post(WireMock.urlEqualTo("/"+config.getGatewayEndpoint()))
-                        .willReturn(WireMock.aResponse().withStatus(204)));
+        Config config = getTestConfig(wireMockRuntimeInfo);
+        stubFor(post(urlEqualTo(config.getGatewayEndpoint()))
+                .willReturn(aResponse().withStatus(204)));
 
         StrmPrivacyClient client = StrmPrivacyClient.builder()
                 .billingId("billingId")
@@ -35,13 +32,37 @@ class StrmPrivacyClientTest {
                 .config(config)
                 .build();
 
-        DemoEvent event = AvroSerializerTest.demoEvent();
-        CompletableFuture<ContentResponse> response = client.send(event, SerializationType.AVRO_BINARY);
-        response.whenComplete((res, exc) -> {
-            assertEquals(204, res.getStatus());
+        DemoEvent event = SerializerTests.avroDemoEvent();
+        client.send(event, SerializationType.AVRO_BINARY)
+                .whenComplete((res, exc) -> assertEquals(204, res.getStatus()));
+    }
 
-        });
+    @Test
+    void testSend204JsonSchema(WireMockRuntimeInfo wireMockRuntimeInfo) throws JsonProcessingException {
 
+        Config config = getTestConfig(wireMockRuntimeInfo);
+        stubFor(post(urlEqualTo(config.getGatewayEndpoint()))
+                .willReturn(aResponse().withStatus(204)));
+
+        StrmPrivacyClient client = StrmPrivacyClient.builder()
+                .billingId("billingId")
+                .clientId("clientId")
+                .clientSecret("clientSecret")
+                .config(config)
+                .build();
+
+        SerializerTests.JsonSchemaDemoEvent event = SerializerTests.jsonSchemaDemoEvent();
+        client.send(event, SerializationType.JSON)
+                .whenComplete((res, exc) -> assertEquals(204, res.getStatus()));
 
     }
+
+    private Config getTestConfig(WireMockRuntimeInfo wireMockRuntimeInfo) {
+        return Config.builder()
+                .gatewayHost("localhost")
+                .gatewayPort(wireMockRuntimeInfo.getHttpPort())
+                .gatewayScheme("http")
+                .build();
+    }
+
 }
