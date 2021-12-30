@@ -1,9 +1,10 @@
 import org.gradle.api.tasks.testing.logging.TestLogEvent.*
 import java.util.*
 
-val slf4jVersion by lazy { "1.7.30" }
-val jerseyVersion by lazy { "2.31" }
-val jettyVersion by lazy { "9.4.38.v20210224" }
+val slf4jVersion = "1.7.32"
+val jerseyVersion = "3.0.3"
+val jettyVersion = "9.4.38.v20210224"
+val junitVersion = "5.8.2"
 
 plugins {
     id("maven-publish")
@@ -39,10 +40,10 @@ tasks.withType<Test> {
 
 dependencies {
     implementation("io.strmprivacy.schemas:schema-common:2.0.0")
-    implementation("org.apache.avro:avro:1.10.0")
+    implementation("org.apache.avro:avro:1.11.0")
     implementation("org.slf4j:slf4j-api:$slf4jVersion")
 
-    implementation("com.fasterxml.jackson.core:jackson-databind:2.8.8")
+    implementation("com.fasterxml.jackson.core:jackson-databind:2.13.1")
     api("org.glassfish.jersey.core:jersey-client:$jerseyVersion")
     api("org.glassfish.jersey.inject:jersey-hk2:$jerseyVersion")
 
@@ -51,11 +52,10 @@ dependencies {
     api("org.eclipse.jetty.http2:http2-http-client-transport:$jettyVersion")
 
     testImplementation("io.strmprivacy.schemas:demo-avro:1.0.2")
-    testImplementation("org.junit.jupiter:junit-jupiter-api:5.8.2")
-    testImplementation("org.junit.jupiter:junit-jupiter-params:5.8.2")
+    testImplementation("org.junit.jupiter:junit-jupiter-api:$junitVersion")
     testImplementation("ch.qos.logback:logback-classic:1.2.10")
     testImplementation("com.github.tomakehurst:wiremock-jre8:2.32.0")
-    testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:5.8.2")
+    testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:$junitVersion")
 
 
 }
