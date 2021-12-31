@@ -11,6 +11,26 @@ plugins {
     id("signing")
 }
 
+dependencies {
+    implementation("io.strmprivacy.schemas:schema-common:2.0.0")
+    implementation("org.apache.avro:avro:1.11.0")
+    implementation("org.slf4j:slf4j-api:$slf4jVersion")
+
+    implementation("com.fasterxml.jackson.core:jackson-databind:2.13.1")
+    api("org.glassfish.jersey.core:jersey-client:$jerseyVersion")
+    api("org.glassfish.jersey.inject:jersey-hk2:$jerseyVersion")
+
+    api("org.eclipse.jetty:jetty-client:$jettyVersion")
+    api("org.eclipse.jetty.http2:http2-client:$jettyVersion")
+    api("org.eclipse.jetty.http2:http2-http-client-transport:$jettyVersion")
+
+    testImplementation("io.strmprivacy.schemas:demo-avro:1.0.2")
+    testImplementation("org.junit.jupiter:junit-jupiter-api:$junitVersion")
+    testImplementation("ch.qos.logback:logback-classic:1.2.10")
+    testImplementation("com.github.tomakehurst:wiremock-jre8:2.32.0")
+    testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:$junitVersion")
+}
+
 val sourcesJar = tasks.register("sourcesJar", Jar::class) {
     from(sourceSets["main"].allSource)
     archiveClassifier.set("sources")
@@ -36,28 +56,6 @@ tasks.withType<Test> {
 
         info.events = setOf(FAILED, SKIPPED)
     }
-}
-
-dependencies {
-    implementation("io.strmprivacy.schemas:schema-common:2.0.0")
-    implementation("org.apache.avro:avro:1.11.0")
-    implementation("org.slf4j:slf4j-api:$slf4jVersion")
-
-    implementation("com.fasterxml.jackson.core:jackson-databind:2.13.1")
-    api("org.glassfish.jersey.core:jersey-client:$jerseyVersion")
-    api("org.glassfish.jersey.inject:jersey-hk2:$jerseyVersion")
-
-    api("org.eclipse.jetty:jetty-client:$jettyVersion")
-    api("org.eclipse.jetty.http2:http2-client:$jettyVersion")
-    api("org.eclipse.jetty.http2:http2-http-client-transport:$jettyVersion")
-
-    testImplementation("io.strmprivacy.schemas:demo-avro:1.0.2")
-    testImplementation("org.junit.jupiter:junit-jupiter-api:$junitVersion")
-    testImplementation("ch.qos.logback:logback-classic:1.2.10")
-    testImplementation("com.github.tomakehurst:wiremock-jre8:2.32.0")
-    testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:$junitVersion")
-
-
 }
 
 publishing {
