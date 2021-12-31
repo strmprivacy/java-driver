@@ -1,11 +1,7 @@
 package io.strmprivacy.driver.client;
 
-import io.strmprivacy.driver.common.WebSocketConsumer;
 import io.strmprivacy.driver.domain.Config;
-import io.strmprivacy.driver.serializer.SerializationType;
 import io.strmprivacy.schemas.StrmPrivacyEvent;
-import lombok.Builder;
-import lombok.extern.slf4j.Slf4j;
 import org.eclipse.jetty.client.api.ContentResponse;
 
 import java.util.concurrent.CompletableFuture;
@@ -14,50 +10,41 @@ import java.util.concurrent.CompletableFuture;
 /**
  * Talks to the STRM Privacy, both to the gateway and the egress.
  */
-@Slf4j
 public class StrmPrivacyClient {
     private final AuthService authService;
     private final SenderService senderService;
-    private final ReceiverService receiverService;
 
-    @Builder
-    public StrmPrivacyClient(String billingId, String clientId, String clientSecret, Config config) {
+//    private static final Logger log = LoggerFactory.getLogger(StrmPrivacyClient.class);
+
+    public StrmPrivacyClient(String billingId,
+                             String clientId,
+                             String clientSecret,
+                             Config config) {
         this.authService = new AuthService(billingId, clientId, clientSecret, config);
         this.senderService = new SenderService(authService, config);
-        this.receiverService = new ReceiverService(authService, config);
     }
 
+    private StrmPrivacyClient(Builder builder) {
+        this(builder.billingId, builder.clientId, builder.clientSecret, builder.config);
+    }
+
+    public static Builder builder() {
+        return new Builder();
+    }
+
+    @Deprecated()
+    public CompletableFuture<ContentResponse> send(StrmPrivacyEvent event,
+                                                   @SuppressWarnings("unused") Object serializationType) {
+        return send(event);
+    }
     /**
      * send an StrmPrivacyEvent.
      *
      * @param event the event.
-     * @param type  the serialization type. only for Avro
      * @return future containing the content response
      */
-    public CompletableFuture<ContentResponse> send(StrmPrivacyEvent event, SerializationType type) {
-        return senderService.send(event, type);
-    }
-
-    /**
-     * Start an endless loop that receives events through a websocket and applies `consumer`  to them.
-     *
-     * @param asJson   tells the server to convert the event data to json. Otherwise you get base64 encoded data
-     *                 that might be avro binary, avro json or json depending on the schema and the serialization type.
-     *                 <p>
-     *                 This will be handled in a future version of the Java driver.
-     * @param consumer The consumer to apply to the ws events
-     */
-    public void startReceivingWs(boolean asJson, WebSocketConsumer consumer) {
-        receiverService.receiveWs(asJson, consumer);
-    }
-
-    /**
-     * queries the egress /is-alive endpoint, which should return ok
-     *
-     * @return ok
-     */
-    public ContentResponse egressIsAlive() {
-        return receiverService.isAlive();
+    public CompletableFuture<ContentResponse> send(StrmPrivacyEvent event) {
+        return senderService.send(event);
     }
 
     /**
@@ -65,7 +52,40 @@ public class StrmPrivacyClient {
      */
     public void stop() {
         senderService.stop();
-        receiverService.stop();
         authService.stop();
+    }
+
+    public static final class Builder {
+        private String billingId;
+        private String clientId;
+        private String clientSecret;
+        private Config config;
+
+        private Builder() {
+        }
+
+        public StrmPrivacyClient build() {
+            return new StrmPrivacyClient(this);
+        }
+
+        public Builder billingId(String val) {
+            billingId = val;
+            return this;
+        }
+
+        public Builder clientId(String val) {
+            clientId = val;
+            return this;
+        }
+
+        public Builder clientSecret(String val) {
+            clientSecret = val;
+            return this;
+        }
+
+        public Builder config(Config val) {
+            config = val;
+            return this;
+        }
     }
 }

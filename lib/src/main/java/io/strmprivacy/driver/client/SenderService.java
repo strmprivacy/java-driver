@@ -2,9 +2,9 @@ package io.strmprivacy.driver.client;
 
 import io.strmprivacy.driver.common.CompletableFutureResponseListener;
 import io.strmprivacy.driver.domain.Config;
-import io.strmprivacy.driver.domain.StrmPrivacyEventDTO;
 import io.strmprivacy.driver.domain.StrmPrivacyException;
-import io.strmprivacy.driver.serializer.SerializationType;
+import io.strmprivacy.driver.serializer.EventSerializer;
+import io.strmprivacy.driver.serializer.SerializerProvider;
 import io.strmprivacy.schemas.StrmPrivacyEvent;
 import org.eclipse.jetty.client.HttpClient;
 import org.eclipse.jetty.client.api.ContentResponse;
@@ -14,6 +14,7 @@ import org.eclipse.jetty.http2.client.HTTP2Client;
 import org.eclipse.jetty.http2.client.http.HttpClientTransportOverHTTP2;
 import org.eclipse.jetty.util.ssl.SslContextFactory;
 
+import java.io.IOException;
 import java.util.concurrent.CompletableFuture;
 
 class SenderService {
@@ -41,24 +42,28 @@ class SenderService {
         }
     }
 
-    public CompletableFuture<ContentResponse> send(StrmPrivacyEvent event, SerializationType type) {
-        StrmPrivacyEventDTO dto = new StrmPrivacyEventDTO(event, type);
+
+    public CompletableFuture<ContentResponse> send(StrmPrivacyEvent event) {
         CompletableFuture<ContentResponse> completableFuture = new CompletableFuture<>();
 
         httpClient.POST(this.endpointUri)
-                .header(HttpHeader.AUTHORIZATION, getBearerHeaderValue())
+                .header(HttpHeader.AUTHORIZATION, "Bearer " + authService.getAccessToken())
                 .header(HttpHeader.CONTENT_TYPE, "application/octet-stream")
                 .header("Strm-Driver-Version", config.getImplementationVersion())
-                .header("Strm-Serialization-Type", dto.getSerializationTypeHeader())
-                .header("Strm-Schema-Ref", dto.getSchemaRef())
-                .content(new BytesContentProvider(dto.serialize()))
+                .header("Strm-Schema-Ref", event.getSchemaRef())
+                .content(new BytesContentProvider(serialize(event)))
                 .send(new CompletableFutureResponseListener(completableFuture));
 
         return completableFuture;
     }
 
-    private String getBearerHeaderValue() {
-        return String.format("Bearer %s", authService.getAccessToken());
+    byte[] serialize(StrmPrivacyEvent event) {
+        try {
+            final EventSerializer serializer = SerializerProvider.getSerializer(event.getSchemaRef(), event.getSchema());
+            return serializer.serialize(event);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     public void stop() {

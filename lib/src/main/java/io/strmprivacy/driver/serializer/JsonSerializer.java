@@ -3,14 +3,12 @@ package io.strmprivacy.driver.serializer;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.github.fge.jsonschema.core.exceptions.ProcessingException;
-import com.github.fge.jsonschema.core.report.ProcessingReport;
-import com.github.fge.jsonschema.main.JsonSchemaFactory;
-import com.github.fge.jsonschema.main.JsonValidator;
-import lombok.extern.slf4j.Slf4j;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
-@Slf4j
 public class JsonSerializer implements EventSerializer {
+
+    private static final Logger log = LoggerFactory.getLogger(EventSerializer.class);
     private static final ObjectMapper MAPPER = new ObjectMapper();
 
     private final JsonNode schema;
@@ -19,26 +17,12 @@ public class JsonSerializer implements EventSerializer {
         this.schema = schema;
     }
 
-    public byte[] serialize(Object event, SerializationType serializationType) {
-        JsonNode node = MAPPER.convertValue(event, JsonNode.class);
-        JsonValidator jsonValidator = JsonSchemaFactory.byDefault().getValidator();
+    public byte[] serialize(Object event) {
         try {
-            final ProcessingReport report = jsonValidator.validate(schema, node);
-            if (report.isSuccess()) {
-                return MAPPER.writeValueAsBytes(event);
-            } else {
-                IllegalArgumentException validationException = new IllegalArgumentException("Provided JSON event does not match with schema");
-                report.iterator().forEachRemaining(message -> validationException.addSuppressed(message.asException()));
-
-                throw validationException;
-            }
-
+            return MAPPER.writeValueAsBytes(event);
         } catch (JsonProcessingException e) {
-            log.error("Error while converting provided event to bytes", e);
-        } catch (ProcessingException e) {
-            log.error("Error while validating provided event against schema", e);
+            log.error("Json processing error {}", e.getMessage());
+            throw new RuntimeException(e);
         }
-
-        return new byte[0];
     }
 }
