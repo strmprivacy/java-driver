@@ -1,3 +1,13 @@
+# [3.0.0](https://github.com/strmprivacy/java-driver/compare/v2.0.1...v3.0.0) (2021-12-31)
+
+
+* fix!: code cleanup, refactoring ([0e7e95b](https://github.com/strmprivacy/java-driver/commit/0e7e95bccf4417216fefd43af90e5fbe50b21640))
+
+
+### BREAKING CHANGES
+
+* removed websocket receive events, remove avro_json support
+
 ## [2.0.1](https://github.com/strmprivacy/java-driver/compare/v2.0.0...v2.0.1) (2021-12-13)
 
 
