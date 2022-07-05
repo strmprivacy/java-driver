@@ -53,8 +53,8 @@ class AuthService {
         }
 
         try {
-            this.authUri = new URI(String.format("%s://%s/%s", config.getKeycloakScheme(), config.getKeycloakHost(), config.getKeycloakEndpoint())).toString();
-            this.refreshUri = new URI(String.format("%s://%s/%s", config.getKeycloakScheme(), config.getKeycloakHost(), config.getKeycloakEndpoint())).toString();
+            this.authUri = new URI(String.format("%s://%s%s", config.getKeycloakScheme(), config.getKeycloakHost(), config.getKeycloakEndpoint())).toString();
+            this.refreshUri = new URI(String.format("%s://%s%s", config.getKeycloakScheme(), config.getKeycloakHost(), config.getKeycloakEndpoint())).toString();
         } catch (URISyntaxException e) {
             throw new IllegalStateException("Malformed URI(s) for " + this.getClass().getCanonicalName(), e);
         }

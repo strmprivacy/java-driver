@@ -94,7 +94,7 @@ public class Config {
         private int gatewayPort = 443;
         private String keycloakScheme = "https";
         private String keycloakHost = "accounts.strmprivacy.io";
-        private String keycloakEndpoint = "auth/realms/streams/protocol/openid-connect/token";
+        private String keycloakEndpoint = "/auth/realms/streams/protocol/openid-connect/token";
 
         private Builder() {
         }
