@@ -8,7 +8,6 @@ import io.strmprivacy.driver.domain.StrmPrivacyException;
 import org.eclipse.jetty.client.HttpClient;
 import org.eclipse.jetty.client.api.ContentResponse;
 import org.eclipse.jetty.client.util.StringContentProvider;
-import org.eclipse.jetty.http.HttpHeader;
 import org.eclipse.jetty.util.ssl.SslContextFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -54,8 +53,8 @@ class AuthService {
         }
 
         try {
-            this.authUri = new URI(String.format("%s://%s%s", config.getStsScheme(), config.getStsHost(), config.getStsAuthEndpoint())).toString();
-            this.refreshUri = new URI(String.format("%s://%s%s", config.getStsScheme(), config.getStsHost(), config.getStsRefreshEndpoint())).toString();
+            this.authUri = new URI(config.getKeycloakUrl()).toString();
+            this.refreshUri = new URI(config.getKeycloakUrl()).toString();
         } catch (URISyntaxException e) {
             throw new IllegalStateException("Malformed URI(s) for " + this.getClass().getCanonicalName(), e);
         }
@@ -87,8 +86,9 @@ class AuthService {
     private void authenticate(String clientId, String clientSecret) {
         try {
             ObjectNode payload = MAPPER.createObjectNode()
-                    .put("clientId", clientId)
-                    .put("clientSecret", clientSecret);
+                    .put("grant_type", "client_credentials")
+                    .put("client_id", clientId)
+                    .put("client_secret", clientSecret);
 
             doPost(authUri, payload);
         } catch (IOException | InterruptedException | TimeoutException | ExecutionException e) {
@@ -99,7 +99,9 @@ class AuthService {
     private void refresh(String refreshToken, String clientId, String clientSecret) {
         try {
             ObjectNode payload = MAPPER.createObjectNode();
-            payload.put("refreshToken", refreshToken);
+            payload
+                    .put("refresh_token", refreshToken)
+                    .put("grant_type", "refresh_token");
 
             doPost(refreshUri, payload);
         } catch (IOException | InterruptedException | TimeoutException | ExecutionException e) {
@@ -113,7 +115,7 @@ class AuthService {
     private void doPost(String uri, ObjectNode payload) throws IOException, InterruptedException, TimeoutException, ExecutionException {
         ContentResponse response = httpClient.POST(uri)
                 .content(new StringContentProvider(MAPPER.writeValueAsString(payload)))
-                .header(HttpHeader.CONTENT_TYPE, "application/json; charset=UTF-8")
+                .header("content-type", "application/x-www-form-urlencoded")
                 .send();
 
         this.authProvider = MAPPER.readValue(response.getContentAsString(), AuthProvider.class);

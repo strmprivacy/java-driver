@@ -6,21 +6,14 @@ public class Config {
     private String gatewayHost;
     private String gatewayEndpoint;
     private int gatewayPort;
-
-    private String stsScheme;
-    private String stsHost;
-    private String stsAuthEndpoint;
-    private String stsRefreshEndpoint;
+    private String keycloakUrl;
 
     private Config(Builder builder) {
         setGatewayScheme(builder.gatewayScheme);
         setGatewayHost(builder.gatewayHost);
         setGatewayEndpoint(builder.gatewayEndpoint);
         setGatewayPort(builder.gatewayPort);
-        setStsScheme(builder.stsScheme);
-        setStsHost(builder.stsHost);
-        setStsAuthEndpoint(builder.stsAuthEndpoint);
-        setStsRefreshEndpoint(builder.stsRefreshEndpoint);
+        setKeycloakUrl(builder.keycloakUrl);
     }
 
     public static Builder builder() {
@@ -65,36 +58,12 @@ public class Config {
         this.gatewayPort = gatewayPort;
     }
 
-    public String getStsScheme() {
-        return stsScheme;
+    public void setKeycloakUrl(String keycloakUrl) {
+        this.keycloakUrl = keycloakUrl;
     }
 
-    public void setStsScheme(String stsScheme) {
-        this.stsScheme = stsScheme;
-    }
-
-    public String getStsHost() {
-        return stsHost;
-    }
-
-    public void setStsHost(String stsHost) {
-        this.stsHost = stsHost;
-    }
-
-    public String getStsAuthEndpoint() {
-        return stsAuthEndpoint;
-    }
-
-    public void setStsAuthEndpoint(String stsAuthEndpoint) {
-        this.stsAuthEndpoint = stsAuthEndpoint;
-    }
-
-    public String getStsRefreshEndpoint() {
-        return stsRefreshEndpoint;
-    }
-
-    public void setStsRefreshEndpoint(String stsRefreshEndpoint) {
-        this.stsRefreshEndpoint = stsRefreshEndpoint;
+    public String getKeycloakUrl() {
+        return keycloakUrl;
     }
 
     public static final class Builder {
@@ -102,11 +71,7 @@ public class Config {
         private String gatewayHost = "events.strmprivacy.io";
         private String gatewayEndpoint = "/event";
         private int gatewayPort = 443;
-
-        private String stsScheme = "https";
-        private String stsHost = "sts.strmprivacy.io";
-        private String stsAuthEndpoint = "/auth";
-        private String stsRefreshEndpoint = "/refresh";
+        private String keycloakUrl = "https://accounts.strmprivacy.io/auth/realms/streams/protocol/openid-connect/token";
 
         private Builder() {
         }
@@ -121,33 +86,13 @@ public class Config {
             return this;
         }
 
-        public Builder gatewayEndpoint(String val) {
-            gatewayEndpoint = val;
-            return this;
-        }
-
         public Builder gatewayPort(int val) {
             gatewayPort = val;
             return this;
         }
 
-        public Builder stsScheme(String val) {
-            stsScheme = val;
-            return this;
-        }
-
-        public Builder stsHost(String val) {
-            stsHost = val;
-            return this;
-        }
-
-        public Builder stsAuthEndpoint(String val) {
-            stsAuthEndpoint = val;
-            return this;
-        }
-
-        public Builder stsRefreshEndpoint(String val) {
-            stsRefreshEndpoint = val;
+        public Builder keycloakUrl(String val) {
+            keycloakUrl = val;
             return this;
         }
 
