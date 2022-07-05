@@ -59,7 +59,9 @@ class StrmPrivacyClientTest {
                 .gatewayHost("localhost")
                 .gatewayPort(wireMockRuntimeInfo.getHttpPort())
                 .gatewayScheme("http")
-                .keycloakUrl("https://accounts.dev.strmprivacy.io/auth/realms/streams/protocol/openid-connect/token")
+                .keycloakScheme("https")
+                .keycloakHost("accounts.dev.strmprivacy.io")
+                .keycloakEndpoint("auth/realms/streams/protocol/openid-connect/token")
                 .build();
     }
 

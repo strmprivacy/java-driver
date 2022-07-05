@@ -1,7 +1,7 @@
 package io.strmprivacy.driver.client;
 
 class AuthProvider {
-    private String idToken;
+    private String access_token;
     private String refreshToken;
     private long expiresAt;
 
@@ -10,18 +10,18 @@ class AuthProvider {
 
     }
 
-    public AuthProvider(String idToken, String refreshToken, long expiresAt) {
-        this.idToken = idToken;
+    public AuthProvider(String access_token, String refreshToken, long expiresAt) {
+        this.access_token = access_token;
         this.refreshToken = refreshToken;
         this.expiresAt = expiresAt;
     }
 
-    public String getIdToken() {
-        return idToken;
+    public String getAccess_token() {
+        return access_token;
     }
 
-    public void setIdToken(String idToken) {
-        this.idToken = idToken;
+    public void setAccess_token(String access_token) {
+        this.access_token = access_token;
     }
 
     public String getRefreshToken() {

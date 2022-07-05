@@ -6,14 +6,18 @@ public class Config {
     private String gatewayHost;
     private String gatewayEndpoint;
     private int gatewayPort;
-    private String keycloakUrl;
+    private String keycloakScheme;
+    private String keycloakHost;
+    private String keycloakEndpoint;
 
     private Config(Builder builder) {
         setGatewayScheme(builder.gatewayScheme);
         setGatewayHost(builder.gatewayHost);
         setGatewayEndpoint(builder.gatewayEndpoint);
         setGatewayPort(builder.gatewayPort);
-        setKeycloakUrl(builder.keycloakUrl);
+        setKeycloakScheme(builder.keycloakScheme);
+        setKeycloakHost(builder.keycloakHost);
+        setKeycloakEndpoint(builder.keycloakEndpoint);
     }
 
     public static Builder builder() {
@@ -58,20 +62,39 @@ public class Config {
         this.gatewayPort = gatewayPort;
     }
 
-    public void setKeycloakUrl(String keycloakUrl) {
-        this.keycloakUrl = keycloakUrl;
+    public void setKeycloakScheme(String keycloakScheme) {
+        this.keycloakScheme = keycloakScheme;
     }
 
-    public String getKeycloakUrl() {
-        return keycloakUrl;
+    public String getKeycloakScheme() {
+        return keycloakScheme;
     }
+
+    public void setKeycloakHost(String keycloakHost) {
+        this.keycloakHost = keycloakHost;
+    }
+
+    public String getKeycloakHost() {
+        return keycloakHost;
+    }
+
+    public void setKeycloakEndpoint(String keycloakEndpoint) {
+        this.keycloakEndpoint = keycloakEndpoint;
+    }
+
+    public String getKeycloakEndpoint() {
+        return keycloakEndpoint;
+    }
+
 
     public static final class Builder {
         private String gatewayScheme = "https";
         private String gatewayHost = "events.strmprivacy.io";
         private String gatewayEndpoint = "/event";
         private int gatewayPort = 443;
-        private String keycloakUrl = "https://accounts.strmprivacy.io/auth/realms/streams/protocol/openid-connect/token";
+        private String keycloakScheme = "https";
+        private String keycloakHost = "accounts.strmprivacy.io";
+        private String keycloakEndpoint = "auth/realms/streams/protocol/openid-connect/token";
 
         private Builder() {
         }
@@ -91,8 +114,19 @@ public class Config {
             return this;
         }
 
-        public Builder keycloakUrl(String val) {
-            keycloakUrl = val;
+
+        public Builder keycloakScheme(String val) {
+            keycloakScheme = val;
+            return this;
+        }
+
+        public Builder keycloakHost(String val) {
+            keycloakHost = val;
+            return this;
+        }
+
+        public Builder keycloakEndpoint(String val) {
+            keycloakEndpoint = val;
             return this;
         }
 

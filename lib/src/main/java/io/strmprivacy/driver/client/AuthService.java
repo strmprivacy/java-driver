@@ -2,12 +2,12 @@ package io.strmprivacy.driver.client;
 
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.node.ObjectNode;
 import io.strmprivacy.driver.domain.Config;
 import io.strmprivacy.driver.domain.StrmPrivacyException;
 import org.eclipse.jetty.client.HttpClient;
 import org.eclipse.jetty.client.api.ContentResponse;
 import org.eclipse.jetty.client.util.StringContentProvider;
+import org.eclipse.jetty.http.HttpHeader;
 import org.eclipse.jetty.util.ssl.SslContextFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -53,8 +53,8 @@ class AuthService {
         }
 
         try {
-            this.authUri = new URI(config.getKeycloakUrl()).toString();
-            this.refreshUri = new URI(config.getKeycloakUrl()).toString();
+            this.authUri = new URI(String.format("%s://%s/%s", config.getKeycloakScheme(), config.getKeycloakHost(), config.getKeycloakEndpoint())).toString();
+            this.refreshUri = new URI(String.format("%s://%s/%s", config.getKeycloakScheme(), config.getKeycloakHost(), config.getKeycloakEndpoint())).toString();
         } catch (URISyntaxException e) {
             throw new IllegalStateException("Malformed URI(s) for " + this.getClass().getCanonicalName(), e);
         }
@@ -71,7 +71,7 @@ class AuthService {
     }
 
     public String getAccessToken() {
-        return authProvider.getIdToken();
+        return authProvider.getAccess_token();
     }
 
     public void stop() {
@@ -85,11 +85,7 @@ class AuthService {
 
     private void authenticate(String clientId, String clientSecret) {
         try {
-            ObjectNode payload = MAPPER.createObjectNode()
-                    .put("grant_type", "client_credentials")
-                    .put("client_id", clientId)
-                    .put("client_secret", clientSecret);
-
+            String payload = String.format("grant_type=client_credentials&client_id=%s&client_secret=%s", clientId, clientSecret);
             doPost(authUri, payload);
         } catch (IOException | InterruptedException | TimeoutException | ExecutionException e) {
             log.error("An error occurred while requesting an access token with clientId '{}'", clientId, e);
@@ -98,10 +94,7 @@ class AuthService {
 
     private void refresh(String refreshToken, String clientId, String clientSecret) {
         try {
-            ObjectNode payload = MAPPER.createObjectNode();
-            payload
-                    .put("refresh_token", refreshToken)
-                    .put("grant_type", "refresh_token");
+            String payload = String.format("grant_type=refresh_token&refresh_token=%s", refreshToken);
 
             doPost(refreshUri, payload);
         } catch (IOException | InterruptedException | TimeoutException | ExecutionException e) {
@@ -112,10 +105,10 @@ class AuthService {
         }
     }
 
-    private void doPost(String uri, ObjectNode payload) throws IOException, InterruptedException, TimeoutException, ExecutionException {
+    private void doPost(String uri, String payload) throws IOException, InterruptedException, TimeoutException, ExecutionException {
         ContentResponse response = httpClient.POST(uri)
-                .content(new StringContentProvider(MAPPER.writeValueAsString(payload)))
-                .header("content-type", "application/x-www-form-urlencoded")
+                .content(new StringContentProvider(payload))
+                .header(HttpHeader.CONTENT_TYPE, "application/x-www-form-urlencoded")
                 .send();
 
         this.authProvider = MAPPER.readValue(response.getContentAsString(), AuthProvider.class);
