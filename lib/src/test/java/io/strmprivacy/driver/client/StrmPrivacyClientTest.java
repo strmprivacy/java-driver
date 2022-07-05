@@ -61,7 +61,7 @@ class StrmPrivacyClientTest {
                 .gatewayScheme("http")
                 .keycloakScheme("https")
                 .keycloakHost("accounts.dev.strmprivacy.io")
-                .keycloakEndpoint("auth/realms/streams/protocol/openid-connect/token")
+                .keycloakEndpoint("/auth/realms/streams/protocol/openid-connect/token")
                 .build();
     }
 
