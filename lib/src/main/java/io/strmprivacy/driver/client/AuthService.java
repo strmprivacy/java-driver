@@ -71,7 +71,7 @@ class AuthService {
     }
 
     public String getAccessToken() {
-        return authProvider.getAccess_token();
+        return authProvider.getAccessToken();
     }
 
     public void stop() {
@@ -112,6 +112,7 @@ class AuthService {
                 .send();
 
         this.authProvider = MAPPER.readValue(response.getContentAsString(), AuthProvider.class);
+        this.authProvider.setExpiresAt();
     }
 
     private class AuthProviderInitializerTask extends TimerTask {
