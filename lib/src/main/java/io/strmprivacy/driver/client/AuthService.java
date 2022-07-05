@@ -30,7 +30,6 @@ class AuthService {
             .configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
     private static final Logger log = LoggerFactory.getLogger(AuthService.class);
 
-    private final String billingId;
     private final String clientId;
     private final String clientSecret;
 
@@ -43,8 +42,7 @@ class AuthService {
     private final String authUri;
     private final String refreshUri;
 
-    public AuthService(String billingId, String clientId, String clientSecret, Config config) {
-        this.billingId = billingId;
+    public AuthService(String clientId, String clientSecret, Config config) {
         this.clientId = clientId;
         this.clientSecret = clientSecret;
 
@@ -86,30 +84,29 @@ class AuthService {
         }
     }
 
-    private void authenticate(String billingId, String clientId, String clientSecret) {
+    private void authenticate(String clientId, String clientSecret) {
         try {
             ObjectNode payload = MAPPER.createObjectNode()
-                    .put("billingId", billingId)
                     .put("clientId", clientId)
                     .put("clientSecret", clientSecret);
 
             doPost(authUri, payload);
         } catch (IOException | InterruptedException | TimeoutException | ExecutionException e) {
-            log.error("An error occurred while requesting an access token with clientId '{}' and billingId '{}'", clientId, billingId, e);
+            log.error("An error occurred while requesting an access token with clientId '{}'", clientId, e);
         }
     }
 
-    private void refresh(String refreshToken, String billingId, String clientId, String clientSecret) {
+    private void refresh(String refreshToken, String clientId, String clientSecret) {
         try {
             ObjectNode payload = MAPPER.createObjectNode();
             payload.put("refreshToken", refreshToken);
 
             doPost(refreshUri, payload);
         } catch (IOException | InterruptedException | TimeoutException | ExecutionException e) {
-            log.debug("Failed to refresh token with clientId '{}' and billingId '{}'", clientId, billingId);
-            log.debug("Trying to request a new token with clientId '{}' and billingId '{}'", clientId, billingId);
+            log.debug("Failed to refresh token with clientId '{}'", clientId);
+            log.debug("Trying to request a new token with clientId '{}'", clientId);
 
-            authenticate(billingId, clientId, clientSecret);
+            authenticate(clientId, clientSecret);
         }
     }
 
@@ -128,11 +125,11 @@ class AuthService {
         public void run() {
             if (authProvider == null) {
                 log.debug("Initializing a new Auth Provider");
-                authenticate(billingId, clientId, clientSecret);
+                authenticate(clientId, clientSecret);
                 latch.countDown();
             } else if (isAlmostExpired(authProvider.getExpiresAt())) {
                 log.debug("Refreshing an existing Auth Provider");
-                refresh(authProvider.getRefreshToken(), billingId, clientId, clientSecret);
+                refresh(authProvider.getRefreshToken(), clientId, clientSecret);
             }
         }
 

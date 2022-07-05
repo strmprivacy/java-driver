@@ -25,7 +25,6 @@ class StrmPrivacyClientTest {
                 .willReturn(aResponse().withStatus(204)));
 
         StrmPrivacyClient client = StrmPrivacyClient.builder()
-                .billingId("billingId")
                 .clientId("clientId")
                 .clientSecret("clientSecret")
                 .config(config)
@@ -44,7 +43,6 @@ class StrmPrivacyClientTest {
                 .willReturn(aResponse().withStatus(204)));
 
         StrmPrivacyClient client = StrmPrivacyClient.builder()
-                .billingId("billingId")
                 .clientId("clientId")
                 .clientSecret("clientSecret")
                 .config(config)
