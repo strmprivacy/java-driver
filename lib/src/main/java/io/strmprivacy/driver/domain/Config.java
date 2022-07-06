@@ -6,18 +6,18 @@ public class Config {
     private String gatewayHost;
     private String gatewayEndpoint;
     private int gatewayPort;
-    private String keycloakScheme;
-    private String keycloakHost;
-    private String keycloakEndpoint;
+    private String authScheme;
+    private String authHost;
+    private String authEndpoint;
 
     private Config(Builder builder) {
         setGatewayScheme(builder.gatewayScheme);
         setGatewayHost(builder.gatewayHost);
         setGatewayEndpoint(builder.gatewayEndpoint);
         setGatewayPort(builder.gatewayPort);
-        setKeycloakScheme(builder.keycloakScheme);
-        setKeycloakHost(builder.keycloakHost);
-        setKeycloakEndpoint(builder.keycloakEndpoint);
+        setAuthScheme(builder.authScheme);
+        setAuthHost(builder.authHost);
+        setAuthEndpoint(builder.authEndpoint);
     }
 
     public static Builder builder() {
@@ -62,28 +62,28 @@ public class Config {
         this.gatewayPort = gatewayPort;
     }
 
-    public void setKeycloakScheme(String keycloakScheme) {
-        this.keycloakScheme = keycloakScheme;
+    public void setAuthScheme(String authScheme) {
+        this.authScheme = authScheme;
     }
 
-    public String getKeycloakScheme() {
-        return keycloakScheme;
+    public String getAuthScheme() {
+        return authScheme;
     }
 
-    public void setKeycloakHost(String keycloakHost) {
-        this.keycloakHost = keycloakHost;
+    public void setAuthHost(String authHost) {
+        this.authHost = authHost;
     }
 
-    public String getKeycloakHost() {
-        return keycloakHost;
+    public String getAuthHost() {
+        return authHost;
     }
 
-    public void setKeycloakEndpoint(String keycloakEndpoint) {
-        this.keycloakEndpoint = keycloakEndpoint;
+    public void setAuthEndpoint(String authEndpoint) {
+        this.authEndpoint = authEndpoint;
     }
 
-    public String getKeycloakEndpoint() {
-        return keycloakEndpoint;
+    public String getAuthEndpoint() {
+        return authEndpoint;
     }
 
 
@@ -92,9 +92,9 @@ public class Config {
         private String gatewayHost = "events.strmprivacy.io";
         private String gatewayEndpoint = "/event";
         private int gatewayPort = 443;
-        private String keycloakScheme = "https";
-        private String keycloakHost = "accounts.strmprivacy.io";
-        private String keycloakEndpoint = "/auth/realms/streams/protocol/openid-connect/token";
+        private String authScheme = "https";
+        private String authHost = "accounts.strmprivacy.io";
+        private String authEndpoint = "/auth/realms/streams/protocol/openid-connect/token";
 
         private Builder() {
         }
@@ -115,18 +115,18 @@ public class Config {
         }
 
 
-        public Builder keycloakScheme(String val) {
-            keycloakScheme = val;
+        public Builder authScheme(String val) {
+            authScheme = val;
             return this;
         }
 
-        public Builder keycloakHost(String val) {
-            keycloakHost = val;
+        public Builder authHost(String val) {
+            authHost = val;
             return this;
         }
 
-        public Builder keycloakEndpoint(String val) {
-            keycloakEndpoint = val;
+        public Builder authEndpoint(String val) {
+            authEndpoint = val;
             return this;
         }
 

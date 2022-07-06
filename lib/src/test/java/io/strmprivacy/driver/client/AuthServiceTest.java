@@ -27,9 +27,9 @@ class AuthServiceTest {
                 .gatewayHost("events.dev.strmprivacy.io")
                 .gatewayPort(443)
                 .gatewayScheme("http")
-                .keycloakScheme("https")
-                .keycloakHost("accounts.dev.strmprivacy.io")
-                .keycloakEndpoint("/auth/realms/streams/protocol/openid-connect/token")
+                .authScheme("https")
+                .authHost("accounts.dev.strmprivacy.io")
+                .authEndpoint("/auth/realms/streams/protocol/openid-connect/token")
                 .build();
     }
 }
