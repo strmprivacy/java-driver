@@ -94,7 +94,8 @@ class AuthService {
 
     private void refresh(String refreshToken, String clientId, String clientSecret) {
         try {
-            String payload = String.format("grant_type=refresh_token&refresh_token=%s", refreshToken);
+            String payload = String.format("grant_type=refresh_token&client_id=%s&client_secret=%s&refresh_token=%s",
+                    clientId, clientSecret, refreshToken);
 
             doPost(refreshUri, payload);
         } catch (IOException | InterruptedException | TimeoutException | ExecutionException e) {
