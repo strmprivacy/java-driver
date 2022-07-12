@@ -1,3 +1,15 @@
+# [4.0.0](https://github.com/strmprivacy/java-driver/compare/v3.0.0...v4.0.0) (2022-07-12)
+
+
+### Features
+
+* **strm-1259:** remove billing id usage ([#13](https://github.com/strmprivacy/java-driver/issues/13)) ([cd08301](https://github.com/strmprivacy/java-driver/commit/cd083018186c5ca6d6c2fde2b062b62b3204fe58))
+
+
+### BREAKING CHANGES
+
+* **strm-1259:** authentication has changed
+
 # [3.0.0](https://github.com/strmprivacy/java-driver/compare/v2.0.1...v3.0.0) (2021-12-31)
 
 
