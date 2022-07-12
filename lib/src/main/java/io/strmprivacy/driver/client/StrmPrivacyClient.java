@@ -16,16 +16,15 @@ public class StrmPrivacyClient {
 
 //    private static final Logger log = LoggerFactory.getLogger(StrmPrivacyClient.class);
 
-    public StrmPrivacyClient(String billingId,
-                             String clientId,
+    public StrmPrivacyClient(String clientId,
                              String clientSecret,
                              Config config) {
-        this.authService = new AuthService(billingId, clientId, clientSecret, config);
+        this.authService = new AuthService(clientId, clientSecret, config);
         this.senderService = new SenderService(authService, config);
     }
 
     private StrmPrivacyClient(Builder builder) {
-        this(builder.billingId, builder.clientId, builder.clientSecret, builder.config);
+        this(builder.clientId, builder.clientSecret, builder.config);
     }
 
     public static Builder builder() {
@@ -56,7 +55,6 @@ public class StrmPrivacyClient {
     }
 
     public static final class Builder {
-        private String billingId;
         private String clientId;
         private String clientSecret;
         private Config config;
@@ -66,11 +64,6 @@ public class StrmPrivacyClient {
 
         public StrmPrivacyClient build() {
             return new StrmPrivacyClient(this);
-        }
-
-        public Builder billingId(String val) {
-            billingId = val;
-            return this;
         }
 
         public Builder clientId(String val) {

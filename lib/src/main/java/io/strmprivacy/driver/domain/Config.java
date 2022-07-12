@@ -6,21 +6,18 @@ public class Config {
     private String gatewayHost;
     private String gatewayEndpoint;
     private int gatewayPort;
-
-    private String stsScheme;
-    private String stsHost;
-    private String stsAuthEndpoint;
-    private String stsRefreshEndpoint;
+    private String authScheme;
+    private String authHost;
+    private String authEndpoint;
 
     private Config(Builder builder) {
         setGatewayScheme(builder.gatewayScheme);
         setGatewayHost(builder.gatewayHost);
         setGatewayEndpoint(builder.gatewayEndpoint);
         setGatewayPort(builder.gatewayPort);
-        setStsScheme(builder.stsScheme);
-        setStsHost(builder.stsHost);
-        setStsAuthEndpoint(builder.stsAuthEndpoint);
-        setStsRefreshEndpoint(builder.stsRefreshEndpoint);
+        setAuthScheme(builder.authScheme);
+        setAuthHost(builder.authHost);
+        setAuthEndpoint(builder.authEndpoint);
     }
 
     public static Builder builder() {
@@ -65,48 +62,39 @@ public class Config {
         this.gatewayPort = gatewayPort;
     }
 
-    public String getStsScheme() {
-        return stsScheme;
+    public void setAuthScheme(String authScheme) {
+        this.authScheme = authScheme;
     }
 
-    public void setStsScheme(String stsScheme) {
-        this.stsScheme = stsScheme;
+    public String getAuthScheme() {
+        return authScheme;
     }
 
-    public String getStsHost() {
-        return stsHost;
+    public void setAuthHost(String authHost) {
+        this.authHost = authHost;
     }
 
-    public void setStsHost(String stsHost) {
-        this.stsHost = stsHost;
+    public String getAuthHost() {
+        return authHost;
     }
 
-    public String getStsAuthEndpoint() {
-        return stsAuthEndpoint;
+    public void setAuthEndpoint(String authEndpoint) {
+        this.authEndpoint = authEndpoint;
     }
 
-    public void setStsAuthEndpoint(String stsAuthEndpoint) {
-        this.stsAuthEndpoint = stsAuthEndpoint;
+    public String getAuthEndpoint() {
+        return authEndpoint;
     }
 
-    public String getStsRefreshEndpoint() {
-        return stsRefreshEndpoint;
-    }
-
-    public void setStsRefreshEndpoint(String stsRefreshEndpoint) {
-        this.stsRefreshEndpoint = stsRefreshEndpoint;
-    }
 
     public static final class Builder {
         private String gatewayScheme = "https";
         private String gatewayHost = "events.strmprivacy.io";
         private String gatewayEndpoint = "/event";
         private int gatewayPort = 443;
-
-        private String stsScheme = "https";
-        private String stsHost = "sts.strmprivacy.io";
-        private String stsAuthEndpoint = "/auth";
-        private String stsRefreshEndpoint = "/refresh";
+        private String authScheme = "https";
+        private String authHost = "accounts.strmprivacy.io";
+        private String authEndpoint = "/auth/realms/streams/protocol/openid-connect/token";
 
         private Builder() {
         }
@@ -121,33 +109,24 @@ public class Config {
             return this;
         }
 
-        public Builder gatewayEndpoint(String val) {
-            gatewayEndpoint = val;
-            return this;
-        }
-
         public Builder gatewayPort(int val) {
             gatewayPort = val;
             return this;
         }
 
-        public Builder stsScheme(String val) {
-            stsScheme = val;
+
+        public Builder authScheme(String val) {
+            authScheme = val;
             return this;
         }
 
-        public Builder stsHost(String val) {
-            stsHost = val;
+        public Builder authHost(String val) {
+            authHost = val;
             return this;
         }
 
-        public Builder stsAuthEndpoint(String val) {
-            stsAuthEndpoint = val;
-            return this;
-        }
-
-        public Builder stsRefreshEndpoint(String val) {
-            stsRefreshEndpoint = val;
+        public Builder authEndpoint(String val) {
+            authEndpoint = val;
             return this;
         }
 

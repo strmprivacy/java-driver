@@ -1,8 +1,16 @@
 package io.strmprivacy.driver.client;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
+import java.time.Instant;
+
 class AuthProvider {
-    private String idToken;
+    @JsonProperty("access_token")
+    private String accessToken;
+    @JsonProperty("refresh_token")
     private String refreshToken;
+    @JsonProperty("expires_in")
+    private long expiresIn;
     private long expiresAt;
 
     // for jackson
@@ -10,18 +18,22 @@ class AuthProvider {
 
     }
 
-    public AuthProvider(String idToken, String refreshToken, long expiresAt) {
-        this.idToken = idToken;
+    public AuthProvider(String accessToken, String refreshToken, long expiresAt) {
+        this.accessToken = accessToken;
         this.refreshToken = refreshToken;
         this.expiresAt = expiresAt;
     }
 
-    public String getIdToken() {
-        return idToken;
+    public String getAccessToken() {
+        return accessToken;
     }
 
-    public void setIdToken(String idToken) {
-        this.idToken = idToken;
+    public void setExpiresAt() {
+        this.expiresAt = Instant.now().getEpochSecond() + this.expiresIn;
+    }
+
+    public void setAccessToken(String accessToken) {
+        this.accessToken = accessToken;
     }
 
     public String getRefreshToken() {

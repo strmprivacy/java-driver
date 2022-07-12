@@ -2,7 +2,6 @@ package io.strmprivacy.driver.client;
 
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.node.ObjectNode;
 import io.strmprivacy.driver.domain.Config;
 import io.strmprivacy.driver.domain.StrmPrivacyException;
 import org.eclipse.jetty.client.HttpClient;
@@ -30,7 +29,6 @@ class AuthService {
             .configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
     private static final Logger log = LoggerFactory.getLogger(AuthService.class);
 
-    private final String billingId;
     private final String clientId;
     private final String clientSecret;
 
@@ -43,8 +41,7 @@ class AuthService {
     private final String authUri;
     private final String refreshUri;
 
-    public AuthService(String billingId, String clientId, String clientSecret, Config config) {
-        this.billingId = billingId;
+    public AuthService(String clientId, String clientSecret, Config config) {
         this.clientId = clientId;
         this.clientSecret = clientSecret;
 
@@ -56,8 +53,8 @@ class AuthService {
         }
 
         try {
-            this.authUri = new URI(String.format("%s://%s%s", config.getStsScheme(), config.getStsHost(), config.getStsAuthEndpoint())).toString();
-            this.refreshUri = new URI(String.format("%s://%s%s", config.getStsScheme(), config.getStsHost(), config.getStsRefreshEndpoint())).toString();
+            this.authUri = new URI(String.format("%s://%s%s", config.getAuthScheme(), config.getAuthHost(), config.getAuthEndpoint())).toString();
+            this.refreshUri = new URI(String.format("%s://%s%s", config.getAuthScheme(), config.getAuthHost(), config.getAuthEndpoint())).toString();
         } catch (URISyntaxException e) {
             throw new IllegalStateException("Malformed URI(s) for " + this.getClass().getCanonicalName(), e);
         }
@@ -74,7 +71,7 @@ class AuthService {
     }
 
     public String getAccessToken() {
-        return authProvider.getIdToken();
+        return authProvider.getAccessToken();
     }
 
     public void stop() {
@@ -86,40 +83,37 @@ class AuthService {
         }
     }
 
-    private void authenticate(String billingId, String clientId, String clientSecret) {
+    private void authenticate(String clientId, String clientSecret) {
         try {
-            ObjectNode payload = MAPPER.createObjectNode()
-                    .put("billingId", billingId)
-                    .put("clientId", clientId)
-                    .put("clientSecret", clientSecret);
-
+            String payload = String.format("grant_type=client_credentials&client_id=%s&client_secret=%s", clientId, clientSecret);
             doPost(authUri, payload);
         } catch (IOException | InterruptedException | TimeoutException | ExecutionException e) {
-            log.error("An error occurred while requesting an access token with clientId '{}' and billingId '{}'", clientId, billingId, e);
+            log.error("An error occurred while requesting an access token with clientId '{}'", clientId, e);
         }
     }
 
-    private void refresh(String refreshToken, String billingId, String clientId, String clientSecret) {
+    private void refresh(String refreshToken, String clientId, String clientSecret) {
         try {
-            ObjectNode payload = MAPPER.createObjectNode();
-            payload.put("refreshToken", refreshToken);
+            String payload = String.format("grant_type=refresh_token&client_id=%s&client_secret=%s&refresh_token=%s",
+                    clientId, clientSecret, refreshToken);
 
             doPost(refreshUri, payload);
         } catch (IOException | InterruptedException | TimeoutException | ExecutionException e) {
-            log.debug("Failed to refresh token with clientId '{}' and billingId '{}'", clientId, billingId);
-            log.debug("Trying to request a new token with clientId '{}' and billingId '{}'", clientId, billingId);
+            log.debug("Failed to refresh token with clientId '{}'", clientId);
+            log.debug("Trying to request a new token with clientId '{}'", clientId);
 
-            authenticate(billingId, clientId, clientSecret);
+            authenticate(clientId, clientSecret);
         }
     }
 
-    private void doPost(String uri, ObjectNode payload) throws IOException, InterruptedException, TimeoutException, ExecutionException {
+    private void doPost(String uri, String payload) throws IOException, InterruptedException, TimeoutException, ExecutionException {
         ContentResponse response = httpClient.POST(uri)
-                .content(new StringContentProvider(MAPPER.writeValueAsString(payload)))
-                .header(HttpHeader.CONTENT_TYPE, "application/json; charset=UTF-8")
+                .content(new StringContentProvider(payload))
+                .header(HttpHeader.CONTENT_TYPE, "application/x-www-form-urlencoded")
                 .send();
 
         this.authProvider = MAPPER.readValue(response.getContentAsString(), AuthProvider.class);
+        this.authProvider.setExpiresAt();
     }
 
     private class AuthProviderInitializerTask extends TimerTask {
@@ -128,11 +122,11 @@ class AuthService {
         public void run() {
             if (authProvider == null) {
                 log.debug("Initializing a new Auth Provider");
-                authenticate(billingId, clientId, clientSecret);
+                authenticate(clientId, clientSecret);
                 latch.countDown();
             } else if (isAlmostExpired(authProvider.getExpiresAt())) {
                 log.debug("Refreshing an existing Auth Provider");
-                refresh(authProvider.getRefreshToken(), billingId, clientId, clientSecret);
+                refresh(authProvider.getRefreshToken(), clientId, clientSecret);
             }
         }
 

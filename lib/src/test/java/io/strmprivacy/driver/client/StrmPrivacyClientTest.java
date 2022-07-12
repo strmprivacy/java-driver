@@ -25,7 +25,6 @@ class StrmPrivacyClientTest {
                 .willReturn(aResponse().withStatus(204)));
 
         StrmPrivacyClient client = StrmPrivacyClient.builder()
-                .billingId("billingId")
                 .clientId("clientId")
                 .clientSecret("clientSecret")
                 .config(config)
@@ -44,7 +43,6 @@ class StrmPrivacyClientTest {
                 .willReturn(aResponse().withStatus(204)));
 
         StrmPrivacyClient client = StrmPrivacyClient.builder()
-                .billingId("billingId")
                 .clientId("clientId")
                 .clientSecret("clientSecret")
                 .config(config)
@@ -61,6 +59,9 @@ class StrmPrivacyClientTest {
                 .gatewayHost("localhost")
                 .gatewayPort(wireMockRuntimeInfo.getHttpPort())
                 .gatewayScheme("http")
+                .authScheme("https")
+                .authHost("accounts.dev.strmprivacy.io")
+                .authEndpoint("/auth/realms/streams/protocol/openid-connect/token")
                 .build();
     }
 
