@@ -3,7 +3,7 @@ import java.util.*
 
 val slf4jVersion = "1.7.32"
 val jerseyVersion = "3.0.3"
-val jettyVersion = "9.4.38.v20210224"
+val jettyVersion = "9.4.48.v20220622"
 val junitVersion = "5.8.2"
 
 plugins {
@@ -12,11 +12,11 @@ plugins {
 }
 
 dependencies {
-    implementation("io.strmprivacy.schemas:schema-common:2.0.0")
+    implementation("io.strmprivacy.schemas:schema-common:2.0.1")
     implementation("org.apache.avro:avro:1.11.0")
     implementation("org.slf4j:slf4j-api:$slf4jVersion")
 
-    implementation("com.fasterxml.jackson.core:jackson-databind:2.13.1")
+    implementation("com.fasterxml.jackson.core:jackson-databind:2.14.2")
     api("org.glassfish.jersey.core:jersey-client:$jerseyVersion")
     api("org.glassfish.jersey.inject:jersey-hk2:$jerseyVersion")
 
