@@ -1,3 +1,11 @@
+# [4.1.0](https://github.com/strmprivacy/java-driver/compare/v4.0.0...v4.1.0) (2023-04-24)
+
+
+### Features
+
+* update dependencies ([8979e76](https://github.com/strmprivacy/java-driver/commit/8979e762fda75808e77ca007113c5774fe5a8af6))
+* update dependencies ([#14](https://github.com/strmprivacy/java-driver/issues/14)) ([3b01a5b](https://github.com/strmprivacy/java-driver/commit/3b01a5bace87e4735bc65ef52f9db273eda4f776))
+
 # [4.0.0](https://github.com/strmprivacy/java-driver/compare/v3.0.0...v4.0.0) (2022-07-12)
 
 
