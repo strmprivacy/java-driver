@@ -4,12 +4,12 @@ import java.util.*
 plugins {
     id("java-library")
     id("org.ajoberstar.grgit") version "4.1.1"
-    id("io.github.gradle-nexus.publish-plugin") version "1.1.0"
+    id("io.github.gradle-nexus.publish-plugin") version "1.3.0"
 }
 
 buildscript {
     tasks.named<Wrapper>("wrapper") {
-        gradleVersion = "6.8.2"
+        gradleVersion = "8.1.1"
         distributionType = Wrapper.DistributionType.ALL
     }
 }
@@ -57,8 +57,8 @@ allprojects {
         mavenCentral()
     }
 
-    java.sourceCompatibility = JavaVersion.VERSION_1_8
-    java.targetCompatibility = JavaVersion.VERSION_1_8
+    java.sourceCompatibility = JavaVersion.VERSION_11
+    java.targetCompatibility = JavaVersion.VERSION_11
 
     tasks.withType<JavaCompile> {
         options.encoding = "UTF-8"

@@ -6,9 +6,8 @@ import io.strmprivacy.driver.domain.Config;
 import io.strmprivacy.driver.domain.StrmPrivacyException;
 import org.eclipse.jetty.client.HttpClient;
 import org.eclipse.jetty.client.api.ContentResponse;
-import org.eclipse.jetty.client.util.StringContentProvider;
+import org.eclipse.jetty.client.util.StringRequestContent;
 import org.eclipse.jetty.http.HttpHeader;
-import org.eclipse.jetty.util.ssl.SslContextFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -45,7 +44,7 @@ class AuthService {
         this.clientId = clientId;
         this.clientSecret = clientSecret;
 
-        this.httpClient = new HttpClient(new SslContextFactory.Client());
+        this.httpClient = new HttpClient();
         try {
             this.httpClient.start();
         } catch (Exception e) {
@@ -108,8 +107,8 @@ class AuthService {
 
     private void doPost(String uri, String payload) throws IOException, InterruptedException, TimeoutException, ExecutionException {
         ContentResponse response = httpClient.POST(uri)
-                .content(new StringContentProvider(payload))
-                .header(HttpHeader.CONTENT_TYPE, "application/x-www-form-urlencoded")
+                .headers(headers -> headers.add(HttpHeader.CONTENT_TYPE, "application/x-www-form-urlencoded"))
+                .body(new StringRequestContent(payload))
                 .send();
 
         this.authProvider = MAPPER.readValue(response.getContentAsString(), AuthProvider.class);
