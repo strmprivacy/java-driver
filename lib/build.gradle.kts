@@ -15,10 +15,7 @@ dependencies {
     implementation("io.strmprivacy.schemas:schema-common:2.0.1")
     implementation("org.apache.avro:avro:1.11.0")
     implementation("org.slf4j:slf4j-api:$slf4jVersion")
-
     implementation("com.fasterxml.jackson.core:jackson-databind:2.14.2")
-//    api("org.glassfish.jersey.core:jersey-client:$jerseyVersion")
-//    api("org.glassfish.jersey.inject:jersey-hk2:$jerseyVersion")
 
     api("org.eclipse.jetty:jetty-client:$jettyVersion")
     api("org.eclipse.jetty.http2:http2-client:$jettyVersion")
