@@ -1,3 +1,15 @@
+# [5.0.0](https://github.com/strmprivacy/java-driver/compare/v4.1.0...v5.0.0) (2023-05-03)
+
+
+### Features
+
+* **strm-2387:** upgrade to latest jetty version and remove deprecated usages ([#15](https://github.com/strmprivacy/java-driver/issues/15)) ([98cd684](https://github.com/strmprivacy/java-driver/commit/98cd68428d8742c0bcee2abc1cada250c2d90c37))
+
+
+### BREAKING CHANGES
+
+* **strm-2387:** targets Java 11 - for Java 8 support, use v4.1.0
+
 # [4.1.0](https://github.com/strmprivacy/java-driver/compare/v4.0.0...v4.1.0) (2023-04-24)
 
 
