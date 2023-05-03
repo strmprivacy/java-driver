@@ -1,3 +1,10 @@
+## [5.0.1](https://github.com/strmprivacy/java-driver/compare/v5.0.0...v5.0.1) (2023-05-03)
+
+
+### Bug Fixes
+
+* **strm-2387:** use api instead of implementation dependency for sl4j ([#16](https://github.com/strmprivacy/java-driver/issues/16)) ([d545ecb](https://github.com/strmprivacy/java-driver/commit/d545ecb410b73f9c4bef98c0f823cc81e10c260c)), closes [#10](https://github.com/strmprivacy/java-driver/issues/10)
+
 # [5.0.0](https://github.com/strmprivacy/java-driver/compare/v4.1.0...v5.0.0) (2023-05-03)
 
 
