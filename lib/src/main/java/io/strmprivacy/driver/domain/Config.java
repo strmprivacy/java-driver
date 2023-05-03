@@ -114,6 +114,10 @@ public class Config {
             return this;
         }
 
+        public Builder gatewayEndpoint(String val) {
+            gatewayEndpoint = val;
+            return this;
+        }
 
         public Builder authScheme(String val) {
             authScheme = val;

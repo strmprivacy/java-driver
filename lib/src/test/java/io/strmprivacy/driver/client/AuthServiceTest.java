@@ -25,11 +25,7 @@ class AuthServiceTest {
     private Config getTestConfig() {
         return Config.builder()
                 .gatewayHost("events.dev.strmprivacy.io")
-                .gatewayPort(443)
-                .gatewayScheme("http")
-                .authScheme("https")
                 .authHost("accounts.dev.strmprivacy.io")
-                .authEndpoint("/auth/realms/streams/protocol/openid-connect/token")
                 .build();
     }
 }

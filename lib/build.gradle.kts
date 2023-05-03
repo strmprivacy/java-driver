@@ -3,8 +3,8 @@ import java.util.*
 
 val slf4jVersion = "1.7.32"
 val jerseyVersion = "3.0.3"
-val jettyVersion = "9.4.48.v20220622"
-val junitVersion = "5.8.2"
+val jettyVersion = "11.0.15"
+val junitVersion = "5.9.2"
 
 plugins {
     id("maven-publish")
@@ -17,8 +17,8 @@ dependencies {
     implementation("org.slf4j:slf4j-api:$slf4jVersion")
 
     implementation("com.fasterxml.jackson.core:jackson-databind:2.14.2")
-    api("org.glassfish.jersey.core:jersey-client:$jerseyVersion")
-    api("org.glassfish.jersey.inject:jersey-hk2:$jerseyVersion")
+//    api("org.glassfish.jersey.core:jersey-client:$jerseyVersion")
+//    api("org.glassfish.jersey.inject:jersey-hk2:$jerseyVersion")
 
     api("org.eclipse.jetty:jetty-client:$jettyVersion")
     api("org.eclipse.jetty.http2:http2-client:$jettyVersion")
@@ -27,7 +27,7 @@ dependencies {
     testImplementation("io.strmprivacy.schemas:demo-avro:1.0.2")
     testImplementation("org.junit.jupiter:junit-jupiter-api:$junitVersion")
     testImplementation("ch.qos.logback:logback-classic:1.2.10")
-    testImplementation("com.github.tomakehurst:wiremock-jre8:2.32.0")
+    testImplementation("com.github.tomakehurst:wiremock:3.0.0-beta-8")
     testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:$junitVersion")
 }
 

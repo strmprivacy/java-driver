@@ -8,11 +8,10 @@ import io.strmprivacy.driver.serializer.SerializerProvider;
 import io.strmprivacy.schemas.StrmPrivacyEvent;
 import org.eclipse.jetty.client.HttpClient;
 import org.eclipse.jetty.client.api.ContentResponse;
-import org.eclipse.jetty.client.util.BytesContentProvider;
+import org.eclipse.jetty.client.util.BytesRequestContent;
 import org.eclipse.jetty.http.HttpHeader;
 import org.eclipse.jetty.http2.client.HTTP2Client;
 import org.eclipse.jetty.http2.client.http.HttpClientTransportOverHTTP2;
-import org.eclipse.jetty.util.ssl.SslContextFactory;
 
 import java.io.IOException;
 import java.util.concurrent.CompletableFuture;
@@ -30,9 +29,7 @@ class SenderService {
         this.config = config;
 
         http2Client = new HTTP2Client();
-        SslContextFactory sslContextFactory = new SslContextFactory.Client();
-        http2Client.addBean(sslContextFactory);
-        httpClient = new HttpClient(new HttpClientTransportOverHTTP2(http2Client), sslContextFactory);
+        httpClient = new HttpClient(new HttpClientTransportOverHTTP2(http2Client));
 
         try {
             http2Client.start();
@@ -47,11 +44,13 @@ class SenderService {
         CompletableFuture<ContentResponse> completableFuture = new CompletableFuture<>();
 
         httpClient.POST(this.endpointUri)
-                .header(HttpHeader.AUTHORIZATION, "Bearer " + authService.getAccessToken())
-                .header(HttpHeader.CONTENT_TYPE, "application/octet-stream")
-                .header("Strm-Driver-Version", config.getImplementationVersion())
-                .header("Strm-Schema-Ref", event.getSchemaRef())
-                .content(new BytesContentProvider(serialize(event)))
+                .headers(headers -> {
+                    headers.add(HttpHeader.AUTHORIZATION, "Bearer " + authService.getAccessToken());
+                    headers.add(HttpHeader.CONTENT_TYPE, "application/octet-stream");
+                    headers.add("Strm-Driver-Version", config.getImplementationVersion());
+                    headers.add("Strm-Schema-Ref", event.getSchemaRef());
+                })
+                .body(new BytesRequestContent(serialize(event)))
                 .send(new CompletableFutureResponseListener(completableFuture));
 
         return completableFuture;
