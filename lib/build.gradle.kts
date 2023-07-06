@@ -1,20 +1,20 @@
 import org.gradle.api.tasks.testing.logging.TestLogEvent.*
 import java.util.*
 
-val slf4jVersion = "1.7.32"
-val jerseyVersion = "3.0.3"
+val slf4jVersion = "2.0.7"
 val jettyVersion = "11.0.15"
-val junitVersion = "5.9.2"
+val junitVersion = "5.9.3"
 
 plugins {
     id("maven-publish")
     id("signing")
+    id("com.github.ben-manes.versions") version "0.47.0"
 }
 
 dependencies {
     implementation("io.strmprivacy.schemas:schema-common:2.0.1")
-    implementation("org.apache.avro:avro:1.11.0")
-    implementation("com.fasterxml.jackson.core:jackson-databind:2.14.2")
+    implementation("org.apache.avro:avro:1.11.2")
+    implementation("com.fasterxml.jackson.core:jackson-databind:2.15.2")
 
     api("org.slf4j:slf4j-api:$slf4jVersion")
     api("org.eclipse.jetty:jetty-client:$jettyVersion")
@@ -23,8 +23,8 @@ dependencies {
 
     testImplementation("io.strmprivacy.schemas:demo-avro:1.0.2")
     testImplementation("org.junit.jupiter:junit-jupiter-api:$junitVersion")
-    testImplementation("ch.qos.logback:logback-classic:1.2.10")
-    testImplementation("com.github.tomakehurst:wiremock:3.0.0-beta-8")
+    testImplementation("ch.qos.logback:logback-classic:1.4.8")
+    testImplementation("com.github.tomakehurst:wiremock:3.0.0-beta-10")
     testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:$junitVersion")
 }
 

@@ -6,6 +6,7 @@ import com.github.tomakehurst.wiremock.junit5.WireMockTest;
 import io.strmprivacy.driver.domain.Config;
 import io.strmprivacy.driver.serializer.SerializerTests;
 import io.strmprivacy.schemas.demo.v1.DemoEvent;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import static com.github.tomakehurst.wiremock.client.WireMock.aResponse;
@@ -15,6 +16,7 @@ import static com.github.tomakehurst.wiremock.client.WireMock.urlEqualTo;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @WireMockTest
+@Disabled("Provide specific client ids and secrets first")
 class StrmPrivacyClientTest {
 
     @Test
