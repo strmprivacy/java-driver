@@ -1,3 +1,10 @@
+# [5.1.0](https://github.com/strmprivacy/java-driver/compare/v5.0.1...v5.1.0) (2023-07-06)
+
+
+### Features
+
+* **deps:** upgrade dependencies ([8767141](https://github.com/strmprivacy/java-driver/commit/8767141922de25bc37cc69ee6631e542719d0d75))
+
 ## [5.0.1](https://github.com/strmprivacy/java-driver/compare/v5.0.0...v5.0.1) (2023-05-03)
 
 
