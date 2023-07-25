@@ -3,7 +3,7 @@ import java.util.*
 
 val slf4jVersion = "2.0.7"
 val jettyVersion = "11.0.15"
-val junitVersion = "5.9.3"
+val junitVersion = "5.10.0"
 
 plugins {
     id("maven-publish")
@@ -15,8 +15,8 @@ dependencies {
     implementation("io.strmprivacy.schemas:schema-common:2.0.1")
     implementation("org.apache.avro:avro:1.11.2")
     implementation("com.fasterxml.jackson.core:jackson-databind:2.15.2")
+    implementation("org.slf4j:slf4j-api:$slf4jVersion")
 
-    api("org.slf4j:slf4j-api:$slf4jVersion")
     api("org.eclipse.jetty:jetty-client:$jettyVersion")
     api("org.eclipse.jetty.http2:http2-client:$jettyVersion")
     api("org.eclipse.jetty.http2:http2-http-client-transport:$jettyVersion")
