@@ -1,3 +1,10 @@
+## [5.1.1](https://github.com/strmprivacy/java-driver/compare/v5.1.0...v5.1.1) (2023-07-25)
+
+
+### Bug Fixes
+
+* **deps:** set slf4j from api to implementation ([#17](https://github.com/strmprivacy/java-driver/issues/17)) ([0fd2708](https://github.com/strmprivacy/java-driver/commit/0fd2708d1a8d581282d480d895c17a2f1017bf86))
+
 # [5.1.0](https://github.com/strmprivacy/java-driver/compare/v5.0.1...v5.1.0) (2023-07-06)
 
 
